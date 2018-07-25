@@ -33,7 +33,7 @@ const siteConfig = {
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
     {doc: 'getting-started', label: 'Docs'},
-    {page: 'help', label: 'Help'},
+    // {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
     { languages: true },
     { search: true }
@@ -88,8 +88,8 @@ const siteConfig = {
   // onPageNav: 'separate',
 
   /* Open Graph and Twitter card images */
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  // ogImage: 'img/docusaurus.png',
+  // twitterImage: 'img/docusaurus.png',
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
