@@ -1,38 +1,8 @@
-Dapp接口文档
-=================
-
-# 目录
-
-<!-- TOC -->
-
-- [Dapp接口文档](#dapp)
-- [目录](#)
-	- [**1 区块blocks**](#1-blocks)
-		- [**1.1 获取dapp区块高度**](#11-dapp)
-		- [**1.2 获取dapp区块数据**](#12-dapp)
-	- [**2 账户accounts**](#2-accounts)
-		- [**2.1 根据地址获取dapp内账户信息**](#21-dapp)
-	- [**3 事务transactions**](#3-transactions)
-		- [**3.1 签名交易**](#31)
-			- [**3.1.1 客户端签名交易(signed)-更安全**](#311-signed)
-				- [**3.1.1.1 dapp充值**](#3111-dapp)
-				- [**3.1.1.2 dapp提现,type=2**](#3112-dapp-type2)
-				- [**3.1.1.2 dapp内部转账,type=3**](#3112-dapp-type3)
-				- [**3.1.1.2 dapp设置昵称,type=4**](#3112-dapp-type4)
-			- [**3.1.2 服务器端签名交易(unsigned)**](#312-unsigned)
-				- [**3.1.2.1 dapp充值**](#3121-dapp)
-				- [**3.1.2.2 dapp提现,type=2**](#3122-dapp-type2)
-				- [**3.1.2.2 dapp内部转账,type=3**](#3122-dapp-type3)
-				- [**3.1.2.2 dapp设置昵称,type=4**](#3122-dapp-type4)
-		- [**3.2 获取未确认的交易**](#32)
-		- [**3.3 获取已确认的交易**](#33)
-		- [**3.4 根据交易id获取交易详情**](#34-id)
-		- [**3.5 根据查询条件获取dapp转帐记录**](#35-dapp)
-	- [**4 智能合约contracts**](#4-contracts)
-		- [**4.1 获取dapp内的所有智能合约**](#41-dapp)
-
-<!-- /TOC -->
-  
+---
+id: ddn-dapp-api
+title: Dapp api
+sidebar_label: Dapp
+---
 
 下面这些是每个dapp都有的通用（默认）api，由ddn-sandbox提供支持。
 

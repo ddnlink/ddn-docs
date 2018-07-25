@@ -1,0 +1,102 @@
+/* Navbar */
+
+.fixedHeaderContainer {
+    background: rgba(255, 255, 255, 0.98);
+    color: #000;
+    padding: 8px 0;
+    position: fixed;
+    z-index: 1000;
+    border-bottom: rgba(0, 0, 0, 0.05) 1px solid;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .1) !important;
+    height: 60px;
+    transition: all .800s;
+    width: 100%;
+    z-index: 9999;
+}
+
+@media only screen and (min-width: 1024px) {
+    .fixedHeaderContainer {
+        flex-shrink: 0;
+    }
+}
+
+.fixedHeaderContainer a {
+    align-items: center;
+    border: 0;
+    color: #044a84;
+    display: flex;
+    flex-flow: row nowrap;
+    height: 34px;
+    z-index: 10000;
+}
+
+.fixedHeaderContainer header {
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+    text-align: left;
+}
+
+.fixedHeaderContainer header img {
+    height: 100%;
+    margin-right: 10px;
+}
+
+.fixedHeaderContainer header .headerTitle {
+    font-size: 1.25em;
+    margin: 0;
+}
+
+.fixedHeaderContainer header .headerTitleWithLogo {
+    display: block;
+    font-size: 1.25em;
+    line-height: 18px;
+    margin: 0;
+    position: relative;
+    z-index: 9999;
+}
+
+.fixedHeaderContainer header h3 {
+    color: white;
+    font-size: 16px;
+    margin: 0;
+    margin-left: 10px;
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .headerTitle {
+        font-size: 17px;
+    }
+    .headerTitleWithLogo {
+        display: none !important;
+    }
+}
+
+/* End of Navbar */
+
+.navigationSlider .slidingNav ul li a {
+    align-items: center;
+    box-sizing: border-box;
+    color: $secondaryColor;
+}
+
+.navigationSlider .slidingNav ul li a:focus,
+.navigationSlider .slidingNav ul li a:hover,
+.navigationSlider .slidingNav ul li.siteNavItemActive a,
+.navigationSlider .slidingNav ul li.siteNavGroupActive a {
+    background: $secondaryColor;
+}
+
+.toc .toggleNav ul li a:hover,
+.toc .toggleNav ul li a:focus {
+    color: $secondaryColor;
+}
+
+.toc .toggleNav ul li.navListItemActive a {
+    color: $secondaryColor;
+}
+
+.docs-prevnext .button {
+    color: #24292e;
+}

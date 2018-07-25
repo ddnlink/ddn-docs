@@ -1,0 +1,20 @@
+{
+  "docs": {
+    "The Basics": [
+      "getting-started",
+      "ddn-install"
+    ],
+    "Guides": [
+      "ddn-wallet-guide",
+      "ddn-explorer-guide",
+      "ddn-dapp"
+    ],
+    "APIs": [
+      "ddn-cli-api",
+      "ddn-js-api",
+      "ddn-http-api",
+      "ddn-aob-api",
+      "ddn-dapp-api"
+    ]
+  }
+}

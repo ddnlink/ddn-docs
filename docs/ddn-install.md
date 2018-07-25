@@ -1,29 +1,8 @@
-# DDN节点安装文档
-
-<!-- TOC -->
-
-- [DDN节点安装文档](#ddn节点安装文档)
-    - [1.Requirements 系统要求](#1requirements-系统要求)
-    - [2 Install 安装](#2-install-安装)
-        - [2.1 Download 下载](#21-download-下载)
-        - [2.2 Preparations 准备工作](#22-preparations-准备工作)
-    - [3 Run 运行](#3-run-运行)
-    - [4 Delegate 受托人配置](#4-delegate-受托人配置)
-        - [4.1 Delegate`s secret 受托人密钥](#41-delegates-secret-受托人密钥)
-        - [4.2 Public Ip 公网IP](#42-public-ip-公网ip)
-    - [5 Upgrade 升级](#5-upgrade-升级)
-    - [6 查看节点](#6-查看节点)
-    - [7 Fault checking 错误诊断](#7-fault-checking-错误诊断)
-        - [7.1 区块链浏览器无法访问](#71-区块链浏览器无法访问)
-            - [情形1](#情形1)
-            - [情形2](#情形2)
-        - [7.2 无法生产块](#72-无法生产块)
-            - [情形1](#情形1-1)
-            - [情形2](#情形2-1)
-            - [情形3](#情形3)
-        - [7.3 无法同步](#73-无法同步)
-
-<!-- /TOC -->
+---
+id: ddn-install
+title: Peer Install
+sidebar_label: Peer Install
+---
 
 ## 1.Requirements 系统要求
 
