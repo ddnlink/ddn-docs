@@ -1,10 +1,8 @@
 ---
 id: ddn-aob-api
-title: AOB
+title: Assets on blockchain
 sidebar_label: Assets on blockchain
 ---
-
-# DDN AOB API文档
 
 ## **1 API使用说明**   
 ### **1.1 请求过程说明**   
