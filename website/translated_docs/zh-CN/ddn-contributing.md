@@ -16,21 +16,11 @@ sidebar_label: Contributing
 
 **[教程](https://ddn.link/docs/tutorial.html)** 这部分是用来一步一步介绍基础概念的。每篇独立的文章都要建立在前面文章的基础上，所以，要保证他们中间不要添加任何“循环依赖”。重要的是，读者能从第一篇文章开始，不用总是回头看定义就可以走到最后一篇文章。这说明了一些顺序选择。这部分文章不要添加太多细节，故意不要让它们覆盖到所有边边角角的细节，而专注于打好基础。
 
-**[接口](https://ddn.link/docs/apis.html)**
-are deep dives into topics that aren't essential for a beginner developer but
-that everyone bumps into sooner or later. They don't have a specific order, and
-target more experienced developers. If you have a set of recipes fitting a
-particular use case, and those recipes aren't opinionated (most DDN
-users would agree on them), this is the place to add them.
+**[接口](https://ddn.link/docs/apis.html)** 这部分深入研究对于初学者来说不是很重要的话题，但是每个人早晚会遇到。它们没有一个特定顺序，目标是更有经验的开发者。如果你有一些特定用例的话题，并这些话题不是自以为是的（大部分DDN用户会这么认为），这就是放他们的地方。
 
-**[参考](https://ddn.link/docs/activityindicator.html)**
-is organized by APIs rather than concepts. It is intended to be exhaustive. Any
-corner cases or recommendations that were skipped for brevity in The Basics or
-Guides should be mentioned in the reference documentation for the corresponding
-APIs.
+**[参考](https://ddn.link/docs/activityindicator.html)** 是由API而不是概念组织的。它的目的是详细。在基本API或指南中略过的任何拐角案例或建议应在相应API的参考文档中提及。
 
-**[贡献](https://ddn.link/docs/contributing.html)**
-should stay up-to-date and be friendly to relatively experienced developers.
+**[贡献](https://ddn.link/docs/contributing.html)** 应该友好的列出相关经验丰富的开发人员，并保持最新。 
 
 **[更多资源](https://ddn.link/docs/more-resources.html)**
 has a more conversational tone than the other sections. Here, it's fine to
