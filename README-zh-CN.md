@@ -26,7 +26,7 @@
 ### 本地运行
 
 1.  `yarn start` 启动开发服务器 (Docusaurus驱动) (或者 `npm start`)
-2.  `open http://localhost:3000/` 打开浏览器
+2.  `open http://localhost:4000/` 打开浏览器
 
 # 预览
 
@@ -123,7 +123,7 @@ React Native showcase.
 1.  Save the files and check in the browser. Some changes may require a server restart.
 1.  Changes to /docs will only be visible in the latest version of the documentation (master).
 
-`open http://localhost:3000/react-native/versions.html`to see other versions.
+`open http://localhost:3000/ddn-docs/versions.html`to see other versions.
 
 ### 测试修改
 
@@ -143,6 +143,10 @@ React Native showcase.
     and you should see recently pushed branches.
 1.  Follow GitHub's instructions.
 1.  If possible, include screenshots of visual changes.
+
+```
+注意：在markdown文档中， 'header' 信息可能会因为编码问题，导致错误。比如id会多出一个 '\b'，删除header部分，重写即可。
+```
 
 ---
 

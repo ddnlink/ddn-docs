@@ -99,11 +99,11 @@ const siteConfig = {
     zIndex: 100,
   },
 
-  algolia: {
-    apiKey: '406f131c39cbabe457df08cfcd102997',
-    indexName: 'ddnlink',
-    algoliaOptions: {} // Optional, if provided by Algolia
-  },
+  // algolia: {
+  //   apiKey: '406f131c39cbabe457df08cfcd102997',
+  //   indexName: 'ddnlink',
+  //   algoliaOptions: {} // Optional, if provided by Algolia
+  // },
 
   cleanUrl: true
 };

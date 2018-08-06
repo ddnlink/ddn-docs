@@ -2,10 +2,23 @@
   "docs": {
     "The Basics": [
       "getting-started",
+      "ebook/eok-beginning",
+      "ebook/eok-cryptocurrency",
+      "ebook/eok-interest",
+      "ebook/eok-consensus-mechanism",
+      "ebook/eok-architecture",
       "ddn-install",
       "ddn-contributing"
     ],
     "Guides": [
+      "ebook/eok-code-reading",
+      "ebook/eok-appjs",
+      "ebook/eok-address",
+      "ebook/eok-p2p",
+      "ebook/eok-crypto",
+      "ebook/eok-sign",
+      "ebook/eok-blockchain",
+      "ebook/eok-dpos",
       "ddn-wallet-guide",
       "ddn-explorer-guide",
       "ddn-dapp"
