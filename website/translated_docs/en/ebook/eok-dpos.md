@@ -299,6 +299,6 @@ backwardTick() 方法是反方向处理，属于回退操作，请自行查阅�
 
 [拜占庭将军问题深入探讨](http://www.8btc.com/baizhantingjiangjun)
 
-[dpos-class.png]: ../styles/images/modules/dpos/dpos-class.png
-[milestones-activity.png]: ../styles/images/modules/dpos/milestones-activity.png
-[dpos-database.png]: ../styles/images/modules/database/mem-database.png
+[dpos-class.png]: /img/ebook/modules/dpos/dpos-class.png
+[milestones-activity.png]: /img/ebook/modules/dpos/milestones-activity.png
+[dpos-database.png]: /img/ebook/modules/database/mem-database.png

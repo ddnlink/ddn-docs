@@ -396,6 +396,6 @@ shared.getContacts = function (req, cb) {
 
 [亿书白皮书]: http://ebookchain.org/ebookchain.pdf
 
-[wallet-add-username]: ../styles/images/third/wallet-add-username.png
-[accounts-class.png]: ../styles/images/modules/accounts/accounts-class.png
-[contacts-class.png]: ../styles/images/modules/accounts/contacts-class.png
+[wallet-add-username]: /img/ebook/third/wallet-add-username.png
+[accounts-class.png]: /img/ebook/modules/accounts/accounts-class.png
+[contacts-class.png]: /img/ebook/modules/accounts/contacts-class.png

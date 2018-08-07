@@ -132,6 +132,6 @@ Nodejs平台强大的网络编程能力，以及js脚本语言的简单快捷，
 
 CSDN发布的地址： <http://geek.csdn.net/news/detail/106765>
 
-[blockchain_overview.png]: ../styles/images/third/blockchain_overview.png
+[blockchain_overview.png]: /img/ebook/third/blockchain_overview.png
 
-[blockchain-lib.png]: ../styles/images/third/blockchain-lib.png
+[blockchain-lib.png]: /img/ebook/third/blockchain-lib.png

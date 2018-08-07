@@ -105,3 +105,12 @@ a.button:hover,
 a.button:focus {
     color: $secondaryColor;
 }
+
+a {
+    color: #24292e
+}
+
+a:hover, 
+a:focus {
+    color: $secondaryColor;
+}

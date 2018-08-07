@@ -77,5 +77,5 @@ sidebar_label: Ebookchain
 亿书官方网站： http://ebookchain.org
 
 [白皮书]: http://ebookchain.org/ebookchain.pdf
-[modules]: ../styles/images/third/modules.png
-[database-all.png]: ../styles/images/modules/database/database-all.png
+[modules]: /img/ebook/third/modules.png
+[database-all.png]: /img/ebook/modules/database/database-all.png

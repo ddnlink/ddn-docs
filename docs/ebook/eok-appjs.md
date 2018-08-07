@@ -270,8 +270,8 @@ modules: ['network', 'connect', 'config', 'logger', 'bus', 'sequence', 'dbSequen
 对于这个app.js文件，成手读它可能就是分分钟的事情，而写出来却要罗嗦这么多。如果，你并没有觉得很轻松，甚至理解很困难，那么可能缺少对`commander`、`domain`和`async`等组件或模块的了解，请看下一篇：**《Node.js开发加密货币》之七： 技术研究——commander、domain和async介绍**
 
 
-[appjs-uml]: ../styles/images/third/appjs-uml.png
-[async-for-modules]: ../styles/images/third/async-for-modules.jpg
+[appjs-uml]: /img/ebook/third/appjs-uml.png
+[async-for-modules]: /img/ebook/third/async-for-modules.jpg
 [PDF文件]: https://www.gitbook.com/download/pdf/book/imfly/bitcoin-on-nodejs
 [ePub文件]: https://www.gitbook.com/download/epub/book/imfly/bitcoin-on-nodejs
 [Mobi文件]: https://www.gitbook.com/download/mobi/book/imfly/bitcoin-on-nodejs

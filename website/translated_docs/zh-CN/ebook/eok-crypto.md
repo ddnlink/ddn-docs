@@ -167,5 +167,5 @@ Accounts.prototype.generateAddressByPublicKey = function (publicKey) {
 
 [Ed25519官方网站](http://ed25519.cr.yp.to/)
 
-[crypto-class.png]: ../styles/images/modules/crypto/class.png
-[crypto-activity.png]: ../styles/images/modules/crypto/activity.png
+[crypto-class.png]: /img/ebook/modules/crypto/class.png
+[crypto-activity.png]: /img/ebook/modules/crypto/activity.png

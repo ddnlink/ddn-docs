@@ -682,7 +682,7 @@ privated.findUpdate = function (lastBlock, peer, cb) {
 
 [以太坊软分叉失败，硬分叉成功](http://8btc.com/thread-36657-1-1.html)
 
-[blocks-class.png]: ../styles/images/modules/blocks/blocks-class.png
-[blocks-activity.png]: ../styles/images/modules/blocks/blocks-activity.png
-[stack-drawers.png]: ../styles/images/third/drawers2.png
-[blocks-database.png]: ../styles/images/modules/blocks/blocks-database.png
+[blocks-class.png]: /img/ebook/modules/blocks/blocks-class.png
+[blocks-activity.png]: /img/ebook/modules/blocks/blocks-activity.png
+[stack-drawers.png]: /img/ebook/third/drawers2.png
+[blocks-database.png]: /img/ebook/modules/blocks/blocks-database.png

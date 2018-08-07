@@ -279,10 +279,10 @@ Alice开了一个网店，但没有直接接入比特币网络，不能自动确
 
 [亿书白皮书 http://ebookchain.org/ebookchain.pdf](http://ebookchain.org/ebookchain.pdf)
 
-[bither-wallet-sign.png]: ../styles/images/third/bither-wallet-sign.png
+[bither-wallet-sign.png]: /img/ebook/third/bither-wallet-sign.png
 
-[addMultisignature.png]: ../styles/images/third/addMultisignature.png
+[addMultisignature.png]: /img/ebook/third/addMultisignature.png
 
-[signatures-class.png]: ../styles/images/modules/signatures/signatures-class.png
+[signatures-class.png]: /img/ebook/modules/signatures/signatures-class.png
 
-[multisignatures-class.png]: ../styles/images/modules/signatures/multisignatures-class.png
+[multisignatures-class.png]: /img/ebook/modules/signatures/multisignatures-class.png

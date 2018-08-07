@@ -410,9 +410,9 @@ Transactions.prototype.processUnconfirmedTransaction = function (transaction, br
 
 [精通比特币（中文）](http://book.8btc.com/master_bitcoin)
 
-[transactions-clase.png]: ../styles/images/modules/transactions/transactions-class.png
-[transactions-activity.png]: ../styles/images/modules/transactions/transactions-activity.png
-[addTransaction-activity.png]: ../styles/images/modules/transactions/addTransaction-activity.png
-[signTransaction-activity.png]: ../styles/images/modules/transactions/signTransaction-activity.png
-[verifyTransaction-activity.png]: ../styles/images/modules/transactions/verifyTransaction-activity.png
-[broadcastTransaction-activity.png]: ../styles/images/modules/transactions/broadcastTransaction-activity.png
+[transactions-clase.png]: /img/ebook/modules/transactions/transactions-class.png
+[transactions-activity.png]: /img/ebook/modules/transactions/transactions-activity.png
+[addTransaction-activity.png]: /img/ebook/modules/transactions/addTransaction-activity.png
+[signTransaction-activity.png]: /img/ebook/modules/transactions/signTransaction-activity.png
+[verifyTransaction-activity.png]: /img/ebook/modules/transactions/verifyTransaction-activity.png
+[broadcastTransaction-activity.png]: /img/ebook/modules/transactions/broadcastTransaction-activity.png
