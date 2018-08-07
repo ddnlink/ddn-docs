@@ -97,6 +97,11 @@
     color: $secondaryColor;
 }
 
-.docs-prevnext .button {
+a.button {
     color: #24292e;
+}
+
+a.button:hover, 
+a.button:focus {
+    color: $secondaryColor;
 }

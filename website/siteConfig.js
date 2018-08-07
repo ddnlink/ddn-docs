@@ -23,6 +23,8 @@ const siteConfig = {
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
 
+  editUrl: 'http://git.ebookchain.net/ddn/ddn-docs/edit/master/docs/',
+
   // Used for publishing and more
   projectName: 'ddn-docs',
   organizationName: 'ddn',
@@ -38,6 +40,7 @@ const siteConfig = {
     { languages: true },
     { search: true }
   ],
+  disableHeaderTitle: false,
 
   // If you have users set above, you add it here:
   users,
