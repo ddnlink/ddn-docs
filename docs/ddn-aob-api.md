@@ -237,7 +237,9 @@ var currency = 'IssuerName.CNY'
 var amount = '10000'
 // 接收地址，需满足前文定义好的acl规则
 var recipientId = 'AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a'
-var trs = DdnJS.aob.createTransfer(currency, amount, recipientId, secret, secondSecret)
+var message = 'xxxxx(交易所ID)'
+
+var trs = DdnJS.aob.createTransfer(currency, amount, recipientId, message, secret, secondSecret)
 console.log(JSON.stringify(trs))
 {"type":14,"amount":0,"fee":10000000,"recipientId":"AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a","senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19481489,"asset":{"aobTransfer":{"currency":"IssuerName.CNY","amount":"10000"}},"signature":"77789071a2ad6d407b9d1e0d654a9deb6d85340a3d2a13d786030e26ac773b4e9b5f052589958d2b8553ae5fc9449496946b5c225e0baa723e7ddecbd89f060a","signSignature":"f0d4a000aae3dd3fa48a92f792d4318e41e3b56cdbaf98649261ae34490652b87645326a432d5deb69f771c133ee4b67d2d22789197be34249e6f7f0c30c1705"}
 
