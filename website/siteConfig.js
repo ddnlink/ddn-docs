@@ -34,13 +34,13 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'getting-started', label: 'Docs'},
+    {doc: 'ddn-install', label: 'Docs'},
     // {page: 'help', label: 'Help'},
     {blog: true, label: 'Blog'},
     { languages: true },
     { search: true }
   ],
-  disableHeaderTitle: false,
+  disableHeaderTitle: true,
 
   // If you have users set above, you add it here:
   users,
@@ -88,7 +88,7 @@ const siteConfig = {
   // stylesheets: ['/css/code-blocks-buttons.css'],
 
   /* On page navigation for the current documentation page */
-  // onPageNav: 'separate',
+  onPageNav: 'separate',
 
   /* Open Graph and Twitter card images */
   // ogImage: 'img/docusaurus.png',

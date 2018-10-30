@@ -76,21 +76,22 @@ node --version
 > ddn-cli crypto -g
 
 #　接下来输入 5 即可生成5个账户
-[ { address: 'DJPNZMDmF7FjeuzHnvvGyRMHN9vKLvvj6G', // 地址
-    secret: 'force mass exclude engage million rose spray milk split lumber seed grocery', // 主密码，也叫一级密码，可以生成公钥和地址，实质为私钥的助记词，必须记录下来
-    publicKey: '6742664d5bfd60a7be823ecb82c628ea87443946d3d748c18e056daf52d5aec9' }, // 公钥，用于4.2章节配置受托人公钥
-  { address: 'D8SB8KPFnvRmEPfR6rpr49dviQTRY6VjTN',
-    secret: 'fantasy key disagree gloom blanket garment worth town foam air leisure cruel',
-    publicKey: 'feb459b3f778bd6b899f098a8b39b2f4d6366e19ca20229d2df4beda576d995c' },
-  { address: 'DEEwCY3oeLdb9BaCdHMxApq9wfQ1CNy8vr',
-    secret: 'peace gather banner tree camp loud double borrow mountain trial design become',
-    publicKey: 'b169920b5450f88271459a790fc13c855d994550ba270b2fa025439542ea0e2f' },
-  { address: 'DASWKE4jqSzKEPqiTkiQJsk7n72U4vfkm4',
-    secret: 'pull cabin insect vast equip index broom tourist hello digital leader anger',
-    publicKey: '29238339f567e071fc2483e3619128259b773748cb613ebe973e98b8ffdd1739' },
-  { address: 'DEyrWt14KKn8v2gKaAzi2sMSfEfxqfcvW9',
-    secret: 'say click session giggle welcome dirt ancient dinosaur measure wisdom gold favorite',
-    publicKey: 'be247a2d3e1e47426dd577d6e3f042fcc5fa1ac0056e702be7fa06da2a8241ba' } ]
+[ { address: 'D7VafcBeYJd3c9vgpKjqNK6rQaXf1Kv8FP', //地址
+    secret: 'cart security eternal wedding estate oyster spatial fly country boy cactus absorb',// 主密码，也叫一级密码，可以生成公钥和地址, 必须记录下来
+    publicKey: 'db63cce3d43e2fa381f516a9e13141c74d8f5836ed79f9e4115a3d90a68a2f3f' }, // 公钥，用于4.2章节配置受托人公钥
+  { address: 'DM8uVSGPLQNoytnCT8PtQQkBgCj4h3FBka',
+    secret: 'world judge olympic three match toe purchasepurse drive shuffle butter twist',
+    publicKey: '3632469fda8c974cadb397bdb528096cbd035c0379495ba928679d23b4b6b412' },
+  { address: 'D9ipsZF1MsZvtAtt6dYkKNTVFRJsvNNBJK',
+    secret: 'join dizzy tornado medal submit mushroom already rack olive neglect unlock enemy',
+    publicKey: 'f8e8e27196a5d19c8c321d9742fb2c6e3fea65e616a88967ca27d1adc2cc81a0' },
+  { address: 'DEpp76KvKSzjuQfhYcVqiae2NdieEuDWFL',
+    secret: 'drive canoe palm address judge female censusneck wealth pulse afraid pilot',
+    publicKey: '17505935602f94172adeb619c02b4864c1eeff1ed8b57958f32cfbd6f1c9bf2c' },
+  { address: 'DFeQGvwmaKQ9c37boqqaRZwCFKc1yQWEod',
+    secret: 'double whip confirm limit name sock drift pig mouse song nuclear armor',
+    publicKey: '1ec4853a66dd71c29f1deeae782a94c2a59854fb58c0ef344e52b9df83372708' } ]
+
 ```
 
 ## 4.2 生成应用模板
@@ -101,25 +102,25 @@ node --version
 
 ```
 # 生成应用模板的时候，最好建立一个新目录
-> mkdir ddn-test-dapp && cd ddn-test-dapp
+> mkdir ddn-dapp-demo && cd ddn-dapp-demo
 > ddn-cli dapps -a
 ```
 
 接下来，我们要回答一系列的问题，以生成应用的注册信息与创世块
 
 ```
-? Enter DApp name ddn-test-dapp
+? Enter DApp name ddn-dapp-demo
 ? Enter DApp description Demo of ddn dapp
 ? Enter DApp tags ddn,dapp,demo
 ? Choose DApp category Common
-? Enter DApp link https://github.com/ddn/ddn-test-dapp.zip
+? Enter DApp link https://github.com/ddn/ddn-dapp-demo.zip
 ? Enter DApp icon url https://yourdomain.com/logo.png
 ? Enter public keys of dapp delegates - hex array, use ',' for separator //这里是4.1章节生存的5个受托人对应的公钥
-6742664d5bfd60a7be823ecb82c628ea87443946d3d748c18e056daf52d5aec9,
-feb459b3f778bd6b899f098a8b39b2f4d6366e19ca20229d2df4beda576d995c,
-b169920b5450f88271459a790fc13c855d994550ba270b2fa025439542ea0e2f,
-29238339f567e071fc2483e3619128259b773748cb613ebe973e98b8ffdd1739,
-be247a2d3e1e47426dd577d6e3f042fcc5fa1ac0056e702be7fa06da2a8241ba
+db63cce3d43e2fa381f516a9e13141c74d8f5836ed79f9e4115a3d90a68a2f3f,
+3632469fda8c974cadb397bdb528096cbd035c0379495ba928679d23b4b6b412,
+f8e8e27196a5d19c8c321d9742fb2c6e3fea65e616a88967ca27d1adc2cc81a0,
+17505935602f94172adeb619c02b4864c1eeff1ed8b57958f32cfbd6f1c9bf2c,
+1ec4853a66dd71c29f1deeae782a94c2a59854fb58c0ef344e52b9df83372708
 ? How many delegates are needed to unlock asset of a dapp? 3
 DApp meta information is saved to ./dapp.json ...
 ```
@@ -151,10 +152,10 @@ Done
 
 > ddn-cli registerdapp -f dapp.json -e "rabbit sphere baby fog blossom build oppose regular crane canvas truth hurry"
 # 返回结果如下,这就是应用id。每个应用注册时返回的id不同，请记下自己的应用id
-a3edcc5b937c4183fb
+6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f
 ```
 
-使用浏览器访问`http://localhost:8001/api/dapps/get?id=a3edcc5b937c4183fb`, 可以查询到该dapp了，下面是返回信息
+使用浏览器访问`http://localhost:8001/api/dapps/get?id=6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f`, 可以查询到该dapp了，下面是返回信息
 
 ```
 {
@@ -163,7 +164,7 @@ a3edcc5b937c4183fb
         "name": "ddn-dapp-test", 
         "description": "A hello world demo for ddn dapp", 
         "tags": "ddn,dapp,demo", 
-        "link": "https://github.com/ddn/ddn-test-dapp.zip", 
+        "link": "https://github.com/ddn/ddn-dapp-demo.zip", 
         "type": 0, 
         "category": 1, 
         "icon": "https://yourdomain.com/logo.png", 
@@ -175,7 +176,7 @@ a3edcc5b937c4183fb
             "be247a2d3e1e47426dd577d6e3f042fcc5fa1ac0056e702be7fa06da2a8241ba"
         ], 
         "unlockDelegates": 3, 
-        "transactionId": "a3edcc5b937c4183fb"
+        "transactionId": "6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f"
     }
 }
 ```
@@ -185,13 +186,13 @@ a3edcc5b937c4183fb
 现在我们把4.2章节中创建的模板代码拷贝到ddn的安装目录下的dapp子目录，并改名为dapp的id
 
 ```
-> cp -r ddn-test-dapp path/to/ddn/dapps/a3edcc5b937c4183fb
+> cp -r ddn-dapp-demo path/to/ddn/dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f
 ```
 
 然后把4.1章节创建的5个受托人密码写入这个dapp的配置文件中
 
 ```
-> cat path/to/ddn/dapps/a3edcc5b937c4183fb/config.json
+> cat path/to/ddn/dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f/config.json
 {
     "secrets": [
         'force mass exclude engage million rose spray milk split lumber seed grocery',
@@ -212,12 +213,12 @@ a3edcc5b937c4183fb
 > ./ddnd restart
 ```
 
-使用浏览器打开`http://localhost:8001/dapps/a3edcc5b937c4183fb/`，可以访问默认的一个前端页面，该页面可以进行一些简单的接口测试
+使用浏览器打开`http://localhost:8001/dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f/`，可以访问默认的一个前端页面，该页面可以进行一些简单的接口测试
 
 也可以观察dapp的日志来排查一些问题
 
 ```
-> tail -f path/to/ddn/dapps/a3edcc5b937c4183fb/logs/debug.*.log
+> tail -f path/to/ddn/dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f/logs/debug.*.log
 ```
 
 ## 4.6 跨链充值
@@ -234,7 +235,7 @@ dapp的前后端通讯协议一般可以分为两大类：读和写。
 
 ```
 // 获取dapp区块数据
-> curl http://localhost:8001/api/dapps/a3edcc5b937c4183fb/blocks
+> curl http://localhost:8001/api/dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f/blocks
 # 返回结果如下
 {
     "blocks": [
@@ -272,7 +273,7 @@ dapp的前后端通讯协议一般可以分为两大类：读和写。
 下面我们分析下ddn dapp的目录结构
 
 ```
-dapps/a3edcc5b937c4183fb/
+dapps/6d159d21775fb6841dd6c098e1b055bcef883efceb7c6033f7f01dcd4066058f/
 ├── blockchain.db         // dapp数据库文件，与主链的数据是分开存放的
 ├── config.json           // 应用的节点配置文件，目前主要用于配置受托人秘钥
 ├── contract              // 合约目录
