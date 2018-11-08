@@ -13,15 +13,109 @@ original_id: ddn-http-api
 1.2 发送请求数据，把构造完成的数据集合通过POST/GET等提交的方式传递给DDN；       
 1.3 DDN对请求数据进行处理，服务器在接收到请求后，会首先进行安全校验，验证通过后便会处理该次发送过来的请求；       
 1.4 返回响应结果数据，DDN把响应结果以JSON的格式反馈给用户，每个响应都包含success字段，表示请求是否成功，成功为true, 失败为false。 如果失败，则还会包含一个error字段，表示错误原因；       
-1.5 对获取的返回结果数据进行处理；       
+1.5 对获取的返回结果数据进行处理； 
+
+### **1.2 点对点传输tansport[安全的api]**
+#### **说明**   
+/peer相关的api，在请求时都需要设置一个header  
+
+ - key为magic，testnet value:0ab796cd, mainnet value:5f5b3cf5  
+ - key为version，value为''  
+
+#### **普通交易**   
+ddn系统的所有写操作都是通过发起一个交易来完成的。 
+交易数据通过一个叫做ddn-js的库来创建，然后再通过一个POST接口发布出去
+
+POST接口规格如下：
+payload为ddn-js创建出来的交易数据
+接口地址：/peer/transactions  
+请求方式：post   
+支持格式：json  
+
+#### **案例1 设置二级密码**   
+请求参数说明： 
+
+|名称	|类型   |必填 |说明              |   
+|------ |-----  |---  |----              |   
+|transaction|json|Y|ddn-js.signature.createSignature生成的交易数据|
+
+返回参数说明：   
+
+|名称	|类型   |说明              |   
+|------ |-----  |----              |   
+|success|boolean  |是否成功 |  
    
----   
+   
+请求示例：   
+```js   
+var ddn = require('ddn-js');  
+var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';  
+var secondPassword  = 'erjimimashezhi001';  
+var transaction = ddn.signature.createSignature(password,secondPassword);       
+console.log(JSON.stringify(transaction))  
+{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}   
+
+// 将上面生成的设置二级密码的交易数据通过post提交给DDN server
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}}' http://47.92.0.84:8001/peer/transactions   
+```   
+   
+JSON返回示例：   
+```js  
+{
+    "success":true  //二级密码设置成功
+}	
+``` 
+
+#### **案例二 转账**   
+请求参数说明：  
+
+|名称	|类型   |必填 |说明              |   
+|------ |-----  |---  |----              |   
+|transaction|json|Y|ddn-js.transaction.createTransaction生成的交易数据|
+
+返回参数说明：   
+
+|名称	|类型   |说明              |   
+|------ |-----  |----              |   
+|success|boolean  |是否成功 |  
+   
+   
+请求示例：   
+```js   
+var ddn = require('ddn-js');   
+var targetAddress = "16358246403719868041";  
+var amount = 100*100000000;   //100 DDN
+var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';  
+var secondPassword  = 'erjimimashezhi001';  
+var message = ''; // 转账备注
+
+// 其中password是在用户登录的时候记录下来的，secondPassword需要每次让用户输入
+// 可以通过user.secondPublicKey来判断用户是否有二级密码，如果没有，则不必输入，以下几个交易类型类似
+var transaction = ddn.transaction.createTransaction(targetAddress, amount, message, password, secondPassword || undefined);       
+JSON.stringify(transaction)
+'{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}'
+
+// 将上面生成的转账操作的交易数据通过post提交给DDN server
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}}' http://47.92.0.84:8001/peer/transactions
+```   
+   
+JSON返回示例：   
+```js  
+{
+    "success":true,  //转账成功
+    "transactionId":"a95c3a5bda15f3fd38295950268c234e922aae97cf803dd8c38c73a6ccf7c561"
+}		
+``` 
+
+
+
+---  
    
 ## **2 接口**   
-### **2.1 账户accounts**   
+## **2.1 账户accounts**   
    
-#### **2.1.1 登录**   
-##### **2.1.1.1 本地加密后再登陆（推荐使用）**   
+### **2.1.1 登录**   
+#### **2.1.1.1 本地加密后再登陆（推荐使用）**   
 接口地址：/api/accounts/open2/   
 请求方式：post   
 支持格式：json   
@@ -59,6 +153,7 @@ JSON返回示例：
 		"address": "D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC",  //DDN地址   
 		"unconfirmedBalance": 19480000000,  //未确认和已确认的余额之和，该值大于等于balance   
 		"balance": 19480000000, //余额   
+		"username": ""  // 账户昵称
 		"publicKey": "bd1e78c5a10fbf1eca36b28bbb8ea85f320967659cbf1f7ff1603d0a368867b9",    //公钥   
 		"unconfirmedSignature": false,   
 		"secondSignature": true,    //二级签名   
@@ -79,7 +174,7 @@ JSON返回示例：
 }   
 ```   
    
-##### **2.1.1.2 本地不加密直接登陆**   
+#### **2.1.1.2 本地不加密直接登陆**   
 接口地址：/api/accounts/open/   
 请求方式：post   
 支持格式：json   
@@ -119,7 +214,7 @@ JSON返回示例：
     }   
 }   
 ```   
-#### **2.1.2 根据地址获取账户信息**   
+### **2.1.2 根据地址获取账户信息**   
 接口地址：/api/accounts   
 请求方式：get   
 支持格式：urlencoded   
@@ -170,7 +265,7 @@ JSON返回示例：
 	}   
 }   
 ```   
-#### **2.1.3 获取账户余额**   
+### **2.1.3 获取账户余额**   
 接口地址：/api/accounts/getBalance   
 请求方式：get   
 支持格式：urlencoded   
@@ -203,7 +298,7 @@ JSON返回示例：
 }  
 ```   
    
-#### **2.1.4 根据地址获取账户公钥**   
+### **2.1.4 根据地址获取账户公钥**   
 接口地址：/api/accounts/getPublickey   
 请求方式：get   
 支持格式：urlencoded   
@@ -233,7 +328,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.1.5 生成公钥**   
+### **2.1.5 生成公钥**   
 todo
 接口地址：/api/accounts/generatePublickey   
 请求方式：post   
@@ -263,118 +358,8 @@ JSON返回示例：
 	"publicKey": "bd1e78c5a10fbf1eca36b28bbb8ea85f320967659cbf1f7ff1603d0a368867b9"   
 }   
 ```   
-   
-#### **2.1.6 根据地址获取其投票列表**   
-接口地址：/api/accounts/delegates   
-请求方式：get   
-支持格式：urlencoded   
-请求参数说明：   
 
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|address |string |Y    |投票人地址      |   
-   
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功获得response数据 |    
-|delegates|Array  |已投票的受托人详情数组      |    
-   
-   
-请求示例：   
-```bash   
-curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
-```   
-   
-JSON返回示例：   
-```js   
-{   
-	"success": true,   
-	"delegates": []   
-}   
-```   
-   
-#### **2.1.7 获取受托人手续费设置**   
-接口地址：/api/accounts/delegates/fee   
-请求方式：get   
-支持格式：无   
-请求参数说明：无  
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功获得response数据 |    
-|fee|integer  |手续费      |    
-   
-   
-请求示例：   
-```bash   
-curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates/fee  
-```   
-   
-JSON返回示例：   
-```js   
-{   
-	"success": true,   
-	"fee": 100000000  // 0.1 DDN   
-}   
-```   
-   
-   
-#### **2.1.8 给受托人投票**   
-接口地址：/api/accounts/delegates   
-请求方式：put   
-支持格式：json   
-请求参数说明：   
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|secret |string |Y    |DDN账户密码       |   
-|publicKey|string  |N|公钥      |    
-|secondSecret|string|N|DDN账户二级密码，最小长度：1，最大长度：100|   
-|delegates|Array|受托人公钥数组，每个公钥前需要加上+或者-号，代表增加/取消对其的投票|   
-   
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功获得response数据 |    
-|transaction|json  |投票交易详情      |    
-   
-   
-请求示例：   
-```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"call scissors pupil water friend timber spend brand vote obey corn size","publicKey":"3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a","delegates":["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]}' 'http://47.92.0.84:8001/api/accounts/delegates'     
-```   
-   
-JSON返回示例：   
-```js   
- {
-	"success": true,
-	"transaction": {
-		"type": 3,  //投票的交易类型为3
-		"amount": 0,
-		"senderPublicKey": "3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a",
-		"requesterPublicKey": null,
-		"timestamp": 5056064,
-		"asset": {
-			"vote": {
-				"votes": ["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]
-			}
-		},
-		"recipientId": null,
-		"signature": "0bff58c7311fc59b3c8b3ffc236bbfece9850c334fb0c292ab087f78cf9a6c0f4d3e541c501887a2c2ec46294c777e8f7bf7dea9cb7c9a175fdec641bb684f08",
-		"id": "5630629337798595849",
-		"fee": 10000000,
-		"senderId": "15238461869262180695"
-	}
-}  
-```   
-
-
-#### **2.1.9 生成新账户**   
+### **2.1.6 生成新账户**   
 接口地址：/api/accounts/new   
 请求方式：get   
 支持格式：无   
@@ -407,7 +392,7 @@ JSON返回示例：
 }
 ```    
 
-#### **2.1.10 获取账户排行榜前100名**   
+### **2.1.7 获取账户排行榜前100名**   
 接口地址：/api/accounts/top   
 请求方式：get   
 支持格式：无   
@@ -460,7 +445,7 @@ JSON返回示例：
 ```   
 
 
-#### **2.1.11 获取当前链上账户总个数**   
+### **2.1.8 获取当前链上账户总个数**   
 接口地址：/api/accounts/count   
 请求方式：get   
 支持格式：无   
@@ -488,8 +473,8 @@ JSON返回示例：
 ```    
    
    
-### **2.2 交易transactions**   
-#### **2.2.1 获取交易信息**   
+## **2.2 交易transactions**   
+### **2.2.1 获取交易信息**   
 todo
 接口地址：/api/transactions   
 请求方式：get   
@@ -592,7 +577,7 @@ JSON返回示例：
 	"count": 3   
 }   
 ```   
-#### **2.2.2 根据交易id查看交易详情**   
+### **2.2.2 根据交易id查看交易详情**   
 接口地址：/api/transactions/get   
 请求方式：get   
 支持格式：urlencoded   
@@ -640,7 +625,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.2.3 根据未确认交易id查看详情**   
+### **2.2.3 根据未确认交易id查看详情**   
 接口地址：/api/transactions/unconfirmed/get   
 请求方式：get   
 支持格式：urlencoded   
@@ -686,7 +671,7 @@ JSON返回示例：
 ```   
    
    
-#### **2.2.4 获取[全网所有]未确认的交易详情**   
+### **2.2.4 获取[全网所有]未确认的交易详情**   
 接口地址：/api/transactions/unconfirmed   
 请求方式：get   
 支持格式：urlencoded   
@@ -720,7 +705,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.2.5 创建交易并广播**   
+### **2.2.5 创建交易并广播**   
 接口地址：/api/transactions   
 请求方式：PUT   
 支持格式：json   
@@ -757,8 +742,8 @@ JSON返回示例：
 }   
 ```  
    
-### **2.3 区块blocks**   
-#### **2.3.1 获取指定区块的详情**   
+## **2.3 区块blocks**   
+### **2.3.1 获取指定区块的详情**   
 接口地址：/api/blocks/get   
 请求方式：get   
 支持格式：urlencoded   
@@ -808,7 +793,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.3.2 获取区块数据**   
+### **2.3.2 获取区块数据**   
 接口地址：/api/blocks   
 请求方式：get   
 支持格式：urlencoded   
@@ -885,7 +870,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.3.3 获取区块链高度**   
+### **2.3.3 获取区块链高度**   
 接口地址：/api/blocks/getHeight   
 请求方式：get   
 支持格式：无   
@@ -908,7 +893,7 @@ JSON返回示例：
 {"success":true,"height":317044}   
 ```   
    
-#### **2.3.4 获取普通转账手续费**   
+### **2.3.4 获取普通转账手续费**   
 接口地址：/api/blocks/getFee   
 请求方式：get   
 支持格式：无   
@@ -932,7 +917,7 @@ JSON返回示例：
 {"success":true,"fee":10000000}     //手续费为0.1 DDN   
 ```   
    
-#### **2.5 获取里程碑**   
+### **2.5 获取里程碑**   
 接口地址：/api/blocks/getMilestone   
 请求方式：get   
 支持格式：无   
@@ -955,7 +940,7 @@ JSON返回示例：
 {"success":true,"milestone":0}   
 ```   
    
-#### **2.3.6 查看单个区块奖励**   
+### **2.3.6 查看单个区块奖励**   
 接口地址：/api/blocks/getReward   
 请求方式：get   
 支持格式：无   
@@ -979,7 +964,7 @@ JSON返回示例：
 {"success":true,"reward":500000000} //每个生成一个block奖励5 DDN   
 ```   
    
-#### **2.3.7 获取COIN当前供应值**   
+### **2.3.7 获取COIN当前供应值**   
 接口地址：/api/blocks/getSupply   
 请求方式：get   
 支持格式：无   
@@ -1003,7 +988,7 @@ JSON返回示例：
 {"success":true,"supply":10158519000000000} //当前testnet共有101585190DDN   
 ```   
    
-#### **2.3.8 区块链状态**   
+### **2.3.8 区块链状态**   
 接口地址：/api/blocks/getStatus   
 请求方式：get   
 支持格式：无   
@@ -1039,7 +1024,7 @@ JSON返回示例：
 ```   
    
 
-#### **2.3.9 获取指定区块的交易信息**   
+### **2.3.9 获取指定区块的交易信息**   
 接口地址：/api/blocks/full   
 请求方式：get   
 支持格式：无   
@@ -1091,9 +1076,9 @@ JSON返回示例：
 ``` 
    
    
-### **2.4 受托人delegates**   
+## **2.4 受托人delegates**   
    
-#### **2.4.1 获取受托人总个数**   
+### **2.4.1 获取受托人总个数**   
 接口地址：/api/delegates/count   
 请求方式：get   
 支持格式：无   
@@ -1119,7 +1104,7 @@ JSON返回示例：
 }     
 ```   
    
-#### **2.4.2 根据受托人公钥查看哪些人为其投了票**   
+### **2.4.2 根据受托人公钥查看哪些人为其投了票**   
 接口地址：/api/delegates/voters   
 请求方式：get   
 支持格式：urlencoded   
@@ -1155,7 +1140,7 @@ JSON返回示例：
 }  
 ```   
    
-#### **2.4.3 根据公钥或者用户名获取受托人详情**   
+### **2.4.3 根据公钥或者用户名获取受托人详情**   
 接口地址： /api/delegates/get   
 请求方式：get   
 支持格式：urlencoded   
@@ -1203,7 +1188,7 @@ JSON返回示例：
 } 
 ```   
    
-#### **2.4.4 获取受托人列表**   
+### **2.4.4 获取受托人列表**   
 接口地址：/api/delegates   
 请求方式：get   
 支持格式：urlencoded   
@@ -1272,7 +1257,7 @@ JSON返回示例：
 ```   
    
    
-#### **2.4.5 获取受托人设置的转账费**   
+### **2.4.5 获取受托人设置的转账费**   
 接口地址：/api/delegates/fee   
 请求方式：get   
 支持格式：urlencoded   
@@ -1300,7 +1285,7 @@ JSON返回示例：
 {"success":true,"fee":10000000000}  //0.1 DDN   
 ```   
    
-#### **2.4.6 根据公钥查看其锻造情况**   
+### **2.4.6 根据公钥查看其锻造情况**   
 接口地址：/api/delegates/forging/getForgedByAccount   
 请求方式：get   
 支持格式：urlencoded   
@@ -1335,7 +1320,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.4.7 注册受托人**   
+### **2.4.7 注册受托人**   
 接口地址：/api/delegates   
 请求方式：put   
 支持格式：urlencoded   
@@ -1386,7 +1371,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.4.8 受托人开启锻造**   
+### **2.4.8 受托人开启锻造**   
 接口地址：/api/delegates/forging/enable   
 请求方式：post   
 支持格式：urlencoded   // url必须是受托人所在服务器  
@@ -1416,7 +1401,7 @@ JSON返回示例：
 {"success":true,"address":"16358246403719868041"}   
 ```      
 
-#### **2.4.9 受托人关闭锻造**   
+### **2.4.9 受托人关闭锻造**   
 接口地址：/api/delegates/forging/disable   
 请求方式：post   
 支持格式：urlencoded   // url必须是受托人所在服务器  
@@ -1445,8 +1430,7 @@ JSON返回示例：
 ```js   
 {"success":true,"address":"16358246403719868041"}     
 ```     
-
-#### **2.4.10 受托人锻造状态查看**   
+### **2.4.10 受托人锻造状态查看**   
 接口地址：/api/delegates/forging/status      
 请求方式：get     
 支持格式：urlencoded    
@@ -1473,11 +1457,120 @@ curl -k -X GET 'http://47.92.0.84:8001/api/delegates/forging/status?publicKey=fa
 JSON返回示例：   
 ```js   
 {"success":true,"enabled":false}    
-```     
+```   
+
+### **2.4.11 给受托人投票 & 取消投票**   
+接口地址：/api/accounts/delegates   
+请求方式：put   
+支持格式：json   
+请求参数说明：   
+
+|名称	|类型   |必填 |说明              |   
+|------ |-----  |---  |----              |   
+|secret |string |Y    |DDN账户密码       |   
+|publicKey|string  |N|公钥      |    
+|secondSecret|string|N|DDN账户二级密码，最小长度：1，最大长度：100|   
+|delegates|Array|受托人公钥数组，每个公钥前需要加上+或者-号，代表增加/取消对其的投票|   
    
-### **2.5 节点peers**   
+返回参数说明：   
+
+|名称	|类型   |说明              |   
+|------ |-----  |----              |   
+|success|boolean  |是否成功获得response数据 |    
+|transaction|json  |投票交易详情      |    
    
-#### **2.5.1 获取本机连接的所有节点信息**   
+   
+请求示例：   
+```bash   
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"call scissors pupil water friend timber spend brand vote obey corn size","publicKey":"3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a","delegates":["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]}' 'http://47.92.0.84:8001/api/accounts/delegates'     
+```   
+   
+JSON返回示例：   
+```js   
+ {
+	"success": true,
+	"transaction": {
+		"type": 3,  //投票的交易类型为3
+		"amount": 0,
+		"senderPublicKey": "3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a",
+		"requesterPublicKey": null,
+		"timestamp": 5056064,
+		"asset": {
+			"vote": {
+				"votes": ["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]
+			}
+		},
+		"recipientId": null,
+		"signature": "0bff58c7311fc59b3c8b3ffc236bbfece9850c334fb0c292ab087f78cf9a6c0f4d3e541c501887a2c2ec46294c777e8f7bf7dea9cb7c9a175fdec641bb684f08",
+		"id": "5630629337798595849",
+		"fee": 10000000,
+		"senderId": "15238461869262180695"
+	}
+}  
+```   
+  
+### **2.4.12 根据地址获取其投票列表**   
+接口地址：/api/accounts/delegates   
+请求方式：get   
+支持格式：urlencoded   
+请求参数说明：   
+
+|名称	|类型   |必填 |说明              |   
+|------ |-----  |---  |----              |   
+|address |string |Y    |投票人地址      |   
+   
+返回参数说明：   
+
+|名称	|类型   |说明              |   
+|------ |-----  |----              |   
+|success|boolean  |是否成功获得response数据 |    
+|delegates|Array  |已投票的受托人详情数组      |    
+   
+   
+请求示例：   
+```bash   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
+```   
+   
+JSON返回示例：   
+```js   
+{   
+	"success": true,   
+	"delegates": []   
+}   
+```   
+   
+### **2.4.13 获取受托人手续费设置**   
+接口地址：/api/accounts/delegates/fee   
+请求方式：get   
+支持格式：无   
+请求参数说明：无  
+
+返回参数说明：   
+
+|名称	|类型   |说明              |   
+|------ |-----  |----              |   
+|success|boolean  |是否成功获得response数据 |    
+|fee|integer  |手续费      |    
+   
+   
+请求示例：   
+```bash   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates/fee  
+```   
+   
+JSON返回示例：   
+```js   
+{   
+	"success": true,   
+	"fee": 100000000  // 0.1 DDN   
+}   
+```   
+
+
+## **2.5 节点peers**   
+   
+### **2.5.1 获取本机连接的所有节点信息**   
 接口地址：/api/peers   
 请求方式：get   
 支持格式：urlencoded   
@@ -1524,7 +1617,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.5.2 获取本节点版本号等信息**   
+### **2.5.2 获取本节点版本号等信息**   
 接口地址：/api/peers/version   
 请求方式：get   
 支持格式：无   
@@ -1555,7 +1648,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.5.3 获取指定ip节点信息**   
+### **2.5.3 获取指定ip节点信息**   
 接口地址：/api/peers/get   
 请求方式：get   
 支持格式：urlencoded   
@@ -1590,8 +1683,8 @@ JSON返回示例：
 ```   
    
    
-### **2.6 同步和加载**   
-#### **2.6.1 查看本地区块链加载状态**   
+## **2.6 同步和加载**   
+### **2.6.1 查看本地区块链加载状态**   
 接口地址：/api/loader/status   
 请求方式：get   
 支持格式：无   
@@ -1619,7 +1712,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.6.2 查看区块同步信息**   
+### **2.6.2 查看区块同步信息**   
 接口地址：/api/loader/status/sync   
 请求方式：get   
 支持格式：无   
@@ -1647,8 +1740,8 @@ JSON返回示例：
 }   
 ```   
    
-### **2.7 二级密码signatures**   
-#### **2.7.1 设置二级密码**   
+## **2.7 二级密码signatures**   
+### **2.7.1 设置二级密码**   
 接口地址：/api/signatures   
 请求方式：put   
 支持格式：json   
@@ -1699,7 +1792,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.7.2 获取二级密码设置手续费**   
+### **2.7.2 获取二级密码设置手续费**   
 接口地址：/api/signatures/fee   
 请求方式：get   
 支持格式：无   
@@ -1728,8 +1821,8 @@ JSON返回示例：
 ```   
    
    
-### **2.8 多重签名multisignatures**   
-#### **2.8.1 设置普通账户为多重签名账户**   
+## **2.8 多重签名multisignatures**   
+### **2.8.1 设置普通账户为多重签名账户**   
 接口地址：/api/multisignatures   
 请求方式：put   
 支持格式：json   
@@ -1768,7 +1861,7 @@ JSON返回示例：
 }   
 ```   
    
-#### **2.8.2 根据公钥获取挂起的多重签名交易详情**   
+### **2.8.2 根据公钥获取挂起的多重签名交易详情**   
 接口地址：/api/multisignatures/pending   
 请求方式：get   
 支持格式：urlencoded   
@@ -1825,7 +1918,7 @@ JSON返回示例：
    
 ```   
    
-#### **2.8.3 非交易发起人对交易进行多重签名**   
+### **2.8.3 非交易发起人对交易进行多重签名**   
 接口地址：/api/multisignatures/sign   
 请求方式：post   
 支持格式：json   
@@ -1923,7 +2016,7 @@ curl -k -X GET http://47.92.0.84:8001/api/transactions/get?id=176203789982770223
    
 ```   
    
-#### **2.8.4 获取多重签名账户信息**   
+### **2.8.4 获取多重签名账户信息**   
 接口地址：/api/multisignatures/accounts   
 请求方式：get   
 支持格式：urlencoded   
@@ -1972,226 +2065,5 @@ JSON返回示例：
 }   
 ```   
 
-### **2.9 点对点传输tansport[安全的api]**   
-#### **2.9.1 说明**   
-/peer相关的api，在请求时都需要设置一个header  
 
- - key为magic，testnet value:0ab796cd, mainnet value:5f5b3cf5  
- - key为version，value为''  
-
-#### **2.9.2 普通交易**   
-ddn系统的所有写操作都是通过发起一个交易来完成的。 
-交易数据通过一个叫做ddn-js的库来创建，然后再通过一个POST接口发布出去
-
-POST接口规格如下：
-payload为ddn-js创建出来的交易数据
-接口地址：/peer/transactions  
-请求方式：post   
-支持格式：json  
-
-##### **2.9.2.1 设置二级密码**   
-请求参数说明： 
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|transaction|json|Y|ddn-js.signature.createSignature生成的交易数据|
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功 |  
-   
-   
-请求示例：   
-```js   
-var ddn = require('ddn-js');  
-var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';  
-var secondPassword  = 'erjimimashezhi001';  
-var transaction = ddn.signature.createSignature(password,secondPassword);       
-console.log(JSON.stringify(transaction))  
-{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}   
-
-// 将上面生成的设置二级密码的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}}' http://47.92.0.84:8001/peer/transactions   
-```   
-   
-JSON返回示例：   
-```js  
-{
-    "success":true  //二级密码设置成功
-}	
-``` 
-
-##### **2.9.2.2 转账**   
-请求参数说明：  
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|transaction|json|Y|ddn-js.transaction.createTransaction生成的交易数据|
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功 |  
-   
-   
-请求示例：   
-```js   
-var ddn = require('ddn-js');   
-var targetAddress = "16358246403719868041";  
-var amount = 100*100000000;   //100 DDN
-var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';  
-var secondPassword  = 'erjimimashezhi001';  
-var message = ''; // 转账备注
-
-// 其中password是在用户登录的时候记录下来的，secondPassword需要每次让用户输入
-// 可以通过user.secondPublicKey来判断用户是否有二级密码，如果没有，则不必输入，以下几个交易类型类似
-var transaction = ddn.transaction.createTransaction(targetAddress, amount, message, password, secondPassword || undefined);       
-JSON.stringify(transaction)
-'{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}'
-
-// 将上面生成的转账操作的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}}' http://47.92.0.84:8001/peer/transactions
-```   
-   
-JSON返回示例：   
-```js  
-{
-    "success":true,  //转账成功
-    "transactionId":"a95c3a5bda15f3fd38295950268c234e922aae97cf803dd8c38c73a6ccf7c561"
-}		
-``` 
-
-##### **2.9.2.3 注册受托人**   
-请求参数说明： 
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|transaction|json|Y|ddn-js.delegate.createDelegate生成的交易数据|
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功 |  
-   
-   
-请求示例：   
-```js   
-var ddn = require('ddn-js');   
-var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';
-var secondPassword  = 'erjimimashezhi001';
-var userName = 'huoding_test';  
-
-var transaction = ddn.delegate.createDelegate(userName, password, secondPassword || undefined);   
-JSON.stringify(transaction)  
-'{"type":2,"amount":0,"fee":10000000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334485,"asset":{"delegate":{"username":"huoding_test","publicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f"}},"signature":"a12ce415d2d21ab46e4c1b918b8717b1d351dd99abd6f2f94d9a1a7e1f32b697f843a05b1851cb857ea45a2476dce592f5ddd612c00cd44488b8b610c57d7f0a","signSignature":"35adc9f1f37d14458e8588f9b4332eedf1151c02480159f64a287a4b0cbb59bfe82040dfec96a4d9560bae99b8eaa1799a7023395db5ddc640d95447992d6e00","id":"12310465407307249905"}'
-
-// 将上面生成的注册受托人的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":2,"amount":0,"fee":10000000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334485,"asset":{"delegate":{"username":"huoding_test","publicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f"}},"signature":"a12ce415d2d21ab46e4c1b918b8717b1d351dd99abd6f2f94d9a1a7e1f32b697f843a05b1851cb857ea45a2476dce592f5ddd612c00cd44488b8b610c57d7f0a","signSignature":"35adc9f1f37d14458e8588f9b4332eedf1151c02480159f64a287a4b0cbb59bfe82040dfec96a4d9560bae99b8eaa1799a7023395db5ddc640d95447992d6e00","id":"12310465407307249905"}}' http://47.92.0.84:8001/peer/transactions
-```   
-   
-JSON返回示例：   
-```js  
-{
-    "success":true  //注册受托人成功
-}		
-``` 
-
-##### **2.9.2.4 投票 & 取消投票**  
-
-请求参数说明：
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|transaction|json|Y|ddn-js.vote.createVote生成的交易数据|
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功 |  
-   
-   
-请求示例：   
-```js   
-var ddn = require('ddn-js');   
-var password = 'measure bottom stock hospital calm hurdle come banner high edge foster cram';
-var secondPassword  = 'erjimimashezhi001';
-// 投票内容是一个列表，列表中的每一个元素是一个符号加上所选择的受托人的公钥，符号为+表示投票，符号为-表示取消投票
-var voteContent = [
-    '-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6',
-    '+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2'
-];
-
-var transaction = ddn.vote.createVote(voteContent, password, secondPassword || undefined);
-JSON.stringify(transaction)
-{"type":3,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334923,"asset":{"vote":{"votes":["-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6","+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2"]}},"signature":"6036c2066a231c452a1c83aafd3bb9db3842ee05d5f17813f8264a4294cdec761faa89edf4a95f9b2e2451285807ab18aa9f989ad9a3165b95643179b8e4580f","signSignature":"a216ca739112e6f65986604b9467ccc8058138a7077faf134d6c4d673306cd1c514cc95bd54a036f7c602a56c4b4f2e4e59f6aa7c376cb1429e89054042e050b","id":"17558357483072606427"}
-
-// 将上面生成的投票的交易数据通过post提交给ddn server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":3,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334923,"asset":{"vote":{"votes":["-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6","+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2"]}},"signature":"6036c2066a231c452a1c83aafd3bb9db3842ee05d5f17813f8264a4294cdec761faa89edf4a95f9b2e2451285807ab18aa9f989ad9a3165b95643179b8e4580f","signSignature":"a216ca739112e6f65986604b9467ccc8058138a7077faf134d6c4d673306cd1c514cc95bd54a036f7c602a56c4b4f2e4e59f6aa7c376cb1429e89054042e050b","id":"17558357483072606427"}}' http://47.92.0.84:8001/peer/transactions
-```   
-   
-JSON返回示例：   
-```js  
-{
-    "success":true  //投票&取消投票 成功
-}		
-``` 
-
-##### **2.9.2.5 账户锁仓**  
-备注：锁仓后且区块高度未达到锁仓高度，则该账户不能执行如下操作：
-
-|交易类型type|备注|
-|----|----|
-|0|主链DDN转账|
-|6|Dapp充值|
-|7|Dapp提现|
-|8|存储小文件|
-|9|发行商注册|
-|10|资产注册|
-|13|资发行产|
-|14|主链aob转账|
-
-请求参数说明：  
-
-|名称	|类型   |必填 |说明              |   
-|------ |-----  |---  |----              |   
-|transaction|json|Y|ddn-js.transaction.createLock生成的交易数据|
-
-返回参数说明：   
-
-|名称	|类型   |说明              |   
-|------ |-----  |----              |   
-|success|boolean  |是否成功 |  
-|transactionId|string|交易id|
-   
-   
-请求示例：   
-```js   
-var ddn = require('ddn-js');   
-var height = 3500;  // 锁仓高度
-var password = 'found knife gather faith wrestle private various fame cover response security predict';
-var secondPassword  = '';
-
-
-// 其中password是在用户登录的时候记录下来的，secondPassword需要每次让用户输入
-// 可以通过user.secondPublicKey来判断用户是否有二级密码，如果没有，则不必输入，以下几个交易类型类似
-var transaction = ddn.transaction.createLock(height, password, secondPassword || undefined);       
-JSON.stringify(transaction)
-'{"type":100,"amount":0,"fee":10000000,"recipientId":null,"args":["3500"],"timestamp":39615653,"asset":{},"senderPublicKey":"2856bdb3ed4c9b34fd2bba277ffd063a00f703113224c88c076c0c58310dbec4","signature":"46770ea4ba48ebb0abbaae95b7931dd9f6cc0d178ff22ec50b9e97f3f31126b8d0c9c47f7d2e4479124530f7d36d9e1aac72da598330cda3b7404cd48fb10e0c","id":"b71187f59e2a7f6dd68f18b4ddd0bb87f20394473f0388952f0ceedf49596811"}'
-
-// 将上面生成的转账操作的交易数据通过post提交给ddn server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":100,"amount":0,"fee":10000000,"recipientId":null,"args":["3500"],"timestamp":39615653,"asset":{},"senderPublicKey":"2856bdb3ed4c9b34fd2bba277ffd063a00f703113224c88c076c0c58310dbec4","signature":"46770ea4ba48ebb0abbaae95b7931dd9f6cc0d178ff22ec50b9e97f3f31126b8d0c9c47f7d2e4479124530f7d36d9e1aac72da598330cda3b7404cd48fb10e0c","id":"b71187f59e2a7f6dd68f18b4ddd0bb87f20394473f0388952f0ceedf49596811"}}' http://localhost:8001/peer/transactions && echo 
-```   
-   
-JSON返回示例：   
-```js  
-{
-    "success":true,  // 锁仓成功
-    "transactionId":"b71187f59e2a7f6dd68f18b4ddd0bb87f20394473f0388952f0ceedf49596811"
-}		
-``` 
 
