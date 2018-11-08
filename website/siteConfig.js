@@ -15,7 +15,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'DDN' /* title for your website */,
+  title: 'DDN v2.1.2' /* title for your website */,
   tagline: 'API',
   url: 'https://ddn.link' /* your website url */,
   baseUrl: '/' /* base url for your project */,
@@ -34,13 +34,13 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'ddn-install', label: 'Docs'},
+    { doc: 'ddn-install', label: 'Docs'},
     // {page: 'help', label: 'Help'},
-    {blog: true, label: 'Blog'},
+    { blog: true, label: 'Blog'},
     { languages: true },
     { search: true }
   ],
-  disableHeaderTitle: true,
+  disableHeaderTitle: false,
 
   // If you have users set above, you add it here:
   users,
