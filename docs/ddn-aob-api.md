@@ -17,16 +17,16 @@ sidebar_label: Assets on blockchain
 ## **2 接口**   
 ### **2.1 AOB相关交易** 
 ddn系统的所有写操作都是通过发起一个交易来完成的。 
-交易数据通过一个叫做ddn-js的库来构建，然后再通过一个POST接口发布出去。
+交易数据通过一个叫做@ddn/ddn-node-sdk的库来构建，然后再通过一个POST接口发布出去。
 
 POST接口规格如下：
-payload为ddn-js创建出来的交易数据
+payload为@ddn/ddn-node-sdk创建出来的交易数据
 接口地址：/peer/transactions  
 请求方式：post   
 支持格式：json  
 公用变量：
 ```
-var DdnJS = require('ddn-js');
+var ddnsdk = require('@ddn/ddn-node-sdk');
 // 一级密码
 var secret = 'motion group blossom coral upper warrior pattern fragile sister misery palm detect'
 // 二级密码
@@ -38,7 +38,7 @@ var secondSecret = 'erjimima001'
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createIssuer根据发行商名字、描述、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据发行商名字、描述、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -49,22 +49,27 @@ var secondSecret = 'erjimima001'
    
 请求示例：   
 ```js   
-// 发行商名称,唯一标识
-var name = 'IssuerName'
-// 发行商描述
-var desc = 'IssuerDesc'
+var issuer = {
+    name: "DDD",    // 发行商名称,唯一标识
+    desc: "J G V",  // 发行商描述
+    issuer_id: "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+    fee: '10000000000',
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
 // 构造交易数据
-var trs = DdnJS.aob.createIssuer(name, desc, secret, secondSecret)
+var trs = await ddnsdk.assetPlugin.createPluginAsset(60, issuer, secret, secondSecret)
+
 console.log(JSON.stringify(trs))
-{"type":9,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19395607,"asset":{"aobIssuer":{"name":"IssuerName","desc":"IssuerDesc"}},"signature":"c6ed2a4bafe2b8aa31f4aaceacc2a96cb028abbabb2ed062937498c58e24ca5467a340ddd63b67f809a680ff91b83e685c64991eb695494ddb2fdc57e5761607","signSignature":"8eceacbd47c2b8ed335145ced19d7a3a51f99bdd6631d16ed214180c6f80e29bd6d572f45e7c7d685584e55cb5c303cf340406553ece28c9c0a2fa7a777aac0b"}
+{"type":60,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55102937,"message":null,"asset":{"aobIssuer":{"name":"DDD","desc":"J G V","issuer_id":"DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ"}},"fee":{[String: "10000000000"] s: 1, e: 10, c: [ 10000000000 ] },"signature":"f8503ee19d2fb1798847cbb66346daf01bf34e0278caa5a9aa51dcd6a7a7081ef45f01ed76518d01169133571f610de1e074a1012d6fd23703a4b35393b0ae0a"}
 
 // 将生成的交易数据通过post发送给server，注册资产发行商IssuerName
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":9,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19395607,"asset":{"aobIssuer":{"name":"IssuerName","desc":"IssuerDesc"}},"signature":"c6ed2a4bafe2b8aa31f4aaceacc2a96cb028abbabb2ed062937498c58e24ca5467a340ddd63b67f809a680ff91b83e685c64991eb695494ddb2fdc57e5761607","signSignature":"8eceacbd47c2b8ed335145ced19d7a3a51f99bdd6631d16ed214180c6f80e29bd6d572f45e7c7d685584e55cb5c303cf340406553ece28c9c0a2fa7a777aac0b"}}' 'http://localhost:8001/peer/transactions' && echo
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":60,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55102937,"message":null,"asset":{"aobIssuer":{"name":"DDD","desc":"J G V","issuer_id":"DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ"}},"fee":{[String: "10000000000"] s: 1, e: 10, c: [ 10000000000 ] },"signature":"f8503ee19d2fb1798847cbb66346daf01bf34e0278caa5a9aa51dcd6a7a7081ef45f01ed76518d01169133571f610de1e074a1012d6fd23703a4b35393b0ae0a"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}		
+{"success":true,"transactionId": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632"}
 ```
 
 #### **2.1.2 注册资产** 
@@ -72,7 +77,7 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createAsset根据资产名字、描述、上限、精度、策略、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据资产名字、描述、上限、精度、策略、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -83,27 +88,32 @@ JSON返回示例：
    
 请求示例：   
 ```js   
-// 资产名称，发行商名.资产名，唯一标识
-var name = 'IssuerName.CNY'
-var desc = '资产描述'
-// 上限
-var maximum = '1000000'
-// 精度，小数点的位数，这里上限是1000000，精度为3，代表资产IssuerName.CNY的最大发行量为1000.000
-var precision = 3
-// 策略
-var strategy = ''
+var obj = {
+    name: "DDD.NCR",    // 资产名称，发行商名.资产名，唯一标识
+    desc: "DDD新币种",
+    maximum: "100000000",   // 上限
+    precision: 2,   // 精度，小数点的位数，这里上限是1000000，精度为3，代表资产IssuerName.CNY的最大发行量为1000.000
+    strategy: '',   // 策略
+    allow_blacklist: '1',
+    allow_whitelist: '1',
+    allow_writeoff: '1',
+    fee: '50000000000'
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
 // 构造交易数据
-var trs = DdnJS.aob.createAsset(name, desc, maximum  , precision, strategy, secret, secondSecret)
+var trs = await ddnsdk.assetPlugin.createPluginAsset(61, obj, secret, secondSecret)
+
 console.log(JSON.stringify(trs))
-{"type":10,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19397444,"asset":{"aobAsset":{"name":"IssuerName.CNY","desc":"资产描述","maximum":"1000000","precision":3,"strategy":""}},"signature":"c755587d331dd2eb62ef91dce1511d83a3e603c7cdc7548a16052519c21ea89c78364e35e5d46da0e2103fa2fb7f037eec55a5deba18826fa13e4252422d750e","signSignature":"1b7ed4c21c477b8ff3d2acfdfd7ff85617093f4c21de70938c46b61c9704b037dbcf7f9e5f5dd1a5dc8f22cf473aaa459e6e5b15ced388b8a1da1e307987a509"}
+{"type":61,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55103637,"message":null,"asset":{"aobAsset":{"name":"DDD.NCR","desc":"DDD新币种","maximum":"100000000","precision":2,"strategy":"","allow_blacklist":"1","allow_whitelist":"1","allow_writeoff":"1"}},"fee":"50000000000","signature":"6a197b7533d6d74bd15d0ffd873db6c841bcd729aec531b5987c02ba94e4c507dd5f085821f10a4dc152c20180b9989303083df1355ac506c0a50f2d0b45da05"}
 
 // 将生成的交易数据通过post发送给server，注册资产IssuerName.CNY
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":10,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19397444,"asset":{"aobAsset":{"name":"IssuerName.CNY","desc":"资产描述","maximum":"1000000","precision":3,"strategy":""}},"signature":"c755587d331dd2eb62ef91dce1511d83a3e603c7cdc7548a16052519c21ea89c78364e35e5d46da0e2103fa2fb7f037eec55a5deba18826fa13e4252422d750e","signSignature":"1b7ed4c21c477b8ff3d2acfdfd7ff85617093f4c21de70938c46b61c9704b037dbcf7f9e5f5dd1a5dc8f22cf473aaa459e6e5b15ced388b8a1da1e307987a509"}}' 'http://localhost:8001/peer/transactions' && echo
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":61,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55103637,"message":null,"asset":{"aobAsset":{"name":"DDD.NCR","desc":"DDD新币种","maximum":"100000000","precision":2,"strategy":"","allow_blacklist":"1","allow_whitelist":"1","allow_writeoff":"1"}},"fee":"50000000000","signature":"6a197b7533d6d74bd15d0ffd873db6c841bcd729aec531b5987c02ba94e4c507dd5f085821f10a4dc152c20180b9989303083df1355ac506c0a50f2d0b45da05"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}		
+{"success":true,"transactionId": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1"}		
 ```
 
 #### **2.1.3 资产设置acl模式** 
@@ -111,7 +121,7 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createFlags根据资产名、流通状态、黑白名单模式、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据资产名、流通状态、黑白名单模式、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -120,24 +130,28 @@ JSON返回示例：
 |success|boolean  |是否成功 |  
 
    
-请求示例：   
+请求示例（开启白名单）：   
 ```js   
-var currency = 'IssuerName.CNY'
-// 资产是否注销，1：流通，2：注销
-var flagType = 1
-// 访问控制列表的类型，0：黑名单， 1：白名单，资产创建后默认为黑名单模式
-var flag = 1
-var trs = DdnJS.aob.createFlags(currency, flagType, flag, secret, secondSecret)
+var obj = {
+    currency: "DDD.NCR",
+    flag: 1,    //flag_type=1（0：使用黑名单，1：使用白名单，2：全开放），flag_type=2（0：流通，1：注销）
+    flag_type: 1    //1：黑白名单设置，2：注销设置
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
+// 构造交易数据
+var trs = await ddnsdk.assetPlugin.createPluginAsset(62, obj, secret, secondSecret)
+
 console.log(JSON.stringify(trs))
-{"type":11,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19400996,"asset":{"aobFlags":{"currency":"IssuerName.CNY","flagType":1,"flag":1}},"signature":"b96fb3d1456e1f26357109cc24d82834eb9a4687f29e69c374bbb1d534568336e148cac52f213aa4d2a69185092f8e1143b49ec4b8048cd9b3af4e20f6ba0b08","signSignature":"b37c77ebebe90341346be2aefe1e12bd7403e5d8f4d6e8f04630190b3e09494a28820da0ffd5f9ff011033aa6d70fc9bb4c159a4493be3b18fd7ff470103570d"}
+{"type":62,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55104595,"message":null,"asset":{"aobFlags":{"currency":"DDD.NCR","flag":1,"flag_type":1}},"fee":"10000000","signature":"79dd60164b3acf300dca9f81b0f032114d5c54448d1fee3a0bd43157ae54b54d3307a3c8eeca4f464c49a6a02265b1e3f2d553c48799f94d8f0437d417c0e305"}
 
 // 将生成的交易数据通过post发送给server，将acl改为白名单模式
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":11,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19400996,"asset":{"aobFlags":{"currency":"IssuerName.CNY","flagType":1,"flag":1}},"signature":"b96fb3d1456e1f26357109cc24d82834eb9a4687f29e69c374bbb1d534568336e148cac52f213aa4d2a69185092f8e1143b49ec4b8048cd9b3af4e20f6ba0b08","signSignature":"b37c77ebebe90341346be2aefe1e12bd7403e5d8f4d6e8f04630190b3e09494a28820da0ffd5f9ff011033aa6d70fc9bb4c159a4493be3b18fd7ff470103570d"}}' 'http://localhost:8001/peer/transactions' && echo
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":62,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55104595,"message":null,"asset":{"aobFlags":{"currency":"DDD.NCR","flag":1,"flag_type":1}},"fee":"10000000","signature":"79dd60164b3acf300dca9f81b0f032114d5c54448d1fee3a0bd43157ae54b54d3307a3c8eeca4f464c49a6a02265b1e3f2d553c48799f94d8f0437d417c0e305"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}		
+{"success":true,"transactionId": "abdcca8e2d7120b8383021a6e94494d72bada96cbb2a6c77e228e9bbe310a97e"}		
 ```
 
 #### **2.1.4 更新访问控制列表（acl）** 
@@ -145,7 +159,7 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createAcl根据资产名字、列表操作方法、黑名单还是白名单、地址列表、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据资产名字、列表操作方法、黑名单还是白名单、地址列表、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -154,33 +168,43 @@ JSON返回示例：
 |success|boolean  |是否成功 |  
 
    
-请求示例：   
+请求示例（增加白名单）：   
 ```js   
-var currency = 'IssuerName.CNY'
-// '+'表示增加列表， ‘-’表示删除列表
-var operator = '+'
-var list = ['15745540293890213312']
-// 访问控制列表的类型，0：黑名单， 1：白名单
-var flag =1
-var trs = DdnJS.aob.createAcl(currency, operator, flag, list, secret, secondSecret)
+var obj = {
+    currency: "DDD.NCR",
+    flag: 1,    // 访问控制列表的类型，0：黑名单， 1：白名单
+    operator: "+",  // '+'表示增加列表， ‘-’表示删除列表
+    list: "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"    //黑白名单内容，多个用逗号分隔
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
+// 构造交易数据
+var trs = await ddnsdk.assetPlugin.createPluginAsset(63, obj, secret, secondSecret)
+
 console.log(JSON.stringify(trs))
-{"type":12,"amount":0,"fee":20000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19403125,"asset":{"aobAcl":{"currency":"IssuerName.CNY","operator":"+","flag":1,"list":["15745540293890213312"]}},"signature":"ad4060e04c1a12256de114e34499f8add24326753f1f8362991ee14aefc4c0fe90ff394d2db97e83770855a5688d463de00656fdd2d04604605cf3c04fdaca0e","signSignature":"63129c58b1b9fcce88cbe829f3104a10ab06037253e9b65feb50ce0d2bb988533b93e8edcad016a85675f9027758fc318cf899ca7ef161a95a8d8a055ae83a02"}
+{"type":63,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55105961,"message":null,"asset":{"aobAcl":{"currency":"DDD.NCR","flag":1,"operator":"+","list":"DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"}},"fee":"10000000","signature":"5d81ebd68af2c2e314b9ca2bae99cbd538933325cf4965b510b88319a67c82f901c2a2e234fe220d6d5424c8deddd0f34e6eb5c326e1360e31118a4db64b5e07"}
 
 // 将生成的交易数据通过post发送给server，把地址列表['15745540293890213312']增加到该白名单中，只修改名单列表，不修改acl模式，手续费0.2DDN
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":12,"amount":0,"fee":20000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19403125,"asset":{"aobAcl":{"currency":"IssuerName.CNY","operator":"+","flag":1,"list":["15745540293890213312"]}},"signature":"ad4060e04c1a12256de114e34499f8add24326753f1f8362991ee14aefc4c0fe90ff394d2db97e83770855a5688d463de00656fdd2d04604605cf3c04fdaca0e","signSignature":"63129c58b1b9fcce88cbe829f3104a10ab06037253e9b65feb50ce0d2bb988533b93e8edcad016a85675f9027758fc318cf899ca7ef161a95a8d8a055ae83a02"}}' 'http://localhost:8001/peer/transactions' && echo
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":63,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55105961,"message":null,"asset":{"aobAcl":{"currency":"DDD.NCR","flag":1,"operator":"+","list":"DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"}},"fee":"10000000","signature":"5d81ebd68af2c2e314b9ca2bae99cbd538933325cf4965b510b88319a67c82f901c2a2e234fe220d6d5424c8deddd0f34e6eb5c326e1360e31118a4db64b5e07"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}
+{"success":true,"transactionId": "fd56923bdff348eb2d74d9736947fc5a98862b3f01fe0c7ad608819429902c84"}
 // 查询更新后的列表（acl/1代表白名单）
-curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aob/assets/IssuerName.CNY/acl/1?limit=10&offset=0' && echo
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aobasset/DDD.NCR/acl/1?limit=10&offset=0' && echo
 {
-	"success": true,
-	"list": [{
-		"address": "15745540293890213312"
-	}],
-	"count": 1
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "id": 1,
+        "currency": "DDD.NCR",
+        "address": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"
+      }
+    ],
+    "total": 1
+  }
 }
 ```
 
@@ -190,7 +214,7 @@ curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aob/a
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createIssuer根据发行商名字、描述、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据发行商名字、描述、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -201,19 +225,25 @@ curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aob/a
    
 请求示例：   
 ```js   
-var currency = 'IssuerName.CNY'
-// 本次发行量=真实数量（100）*10**精度（3），所有发行量之和需 <= 上限*精度
-var amount = '100000'
-var trs = DdnJS.aob.createIssue(currency, amount, secret, secondSecret)
-console.log(JSON.stringify(trs))
-{"type":13,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19475744,"asset":{"aobIssue":{"currency":"IssuerName.CNY","amount":"100000"}},"signature":"32b01a18eca2b0dc7e2ce77ba4e758eaae2532f60844760a762cc20918e7439ac6ca585b921db6ede833ed0bf1c62e30cec545a928abafe0b679183a6ad02202","signSignature":"4fc290d7d7d788e9112a56233df0fe796cba39be3efa0cebf00cbc7e5bc5fd1369fad49e5698d967845b5c02e427926049cab25845d4d385e4a395791906f909"}
+var obj = {
+    currency: "DDD.NCR",
+    aobAmount: "50000000",  // 本次发行量=真实数量（100）*10**精度（3），所有发行量之和需 <= 上限*精度
+    fee: '10000000',
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
+// 构造交易数据
+var trs = await ddnsdk.assetPlugin.createPluginAsset(64, obj, secret, secondSecret)
 
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":13,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19475744,"asset":{"aobIssue":{"currency":"IssuerName.CNY","amount":"100000"}},"signature":"32b01a18eca2b0dc7e2ce77ba4e758eaae2532f60844760a762cc20918e7439ac6ca585b921db6ede833ed0bf1c62e30cec545a928abafe0b679183a6ad02202","signSignature":"4fc290d7d7d788e9112a56233df0fe796cba39be3efa0cebf00cbc7e5bc5fd1369fad49e5698d967845b5c02e427926049cab25845d4d385e4a395791906f909"}}' 'http://localhost:8001/peer/transactions' && echo
+console.log(JSON.stringify(trs))
+{"type":64,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55108465,"message":null,"asset":{"aobIssue":{"currency":"DDD.NCR","amount":"50000000"}},"fee":"10000000","signature":"968df5d4853b0f6f78447dbd4e08f53f27a5825121e0c6f62adda81ee6cca8e602b5c6018a175b06dbe7125e099f200da24e972411246b462ba4b96a54b1b00d"}
+
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":64,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55108465,"message":null,"asset":{"aobIssue":{"currency":"DDD.NCR","amount":"50000000"}},"fee":"10000000","signature":"968df5d4853b0f6f78447dbd4e08f53f27a5825121e0c6f62adda81ee6cca8e602b5c6018a175b06dbe7125e099f200da24e972411246b462ba4b96a54b1b00d"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}			
+{"success":true,"transactionId": "7a607625c9d3ddcadc1a645c4050a6e6f87bfe800990d28b5b96bac9a3701740"}			
 ```
 
 #### **2.1.6 资产转账** 
@@ -221,7 +251,7 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createTransfer根据资产名字、数量、接收者地址、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据资产名字、数量、接收者地址、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -232,24 +262,28 @@ JSON返回示例：
    
 请求示例：   
 ```js   
-var currency = 'IssuerName.CNY'
-// 本次转账数（10000）=真实数量（10）*10**精度（3），需 <= 当前资产发行总量
-var amount = '10000'
-// 接收地址，需满足前文定义好的acl规则
-var recipientId = 'AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a'
-var message = 'xxxxx(交易所ID)'
+var obj = {
+    recipient_id: "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q",    // 接收地址，需满足前文定义好的acl规则
+    currency: "DDD.NCR",
+    aobAmount: "10",    // 本次转账数（10000）=真实数量（10）*10**精度（3），需 <= 当前资产发行总量
+    message: '测试转账',
+    fee: '0',
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
+// 构造交易数据
+var trs = await ddnsdk.assetPlugin.createPluginAsset(65, obj, secret, secondSecret)
 
-var trs = DdnJS.aob.createTransfer(currency, amount, recipientId, message, secret, secondSecret)
 console.log(JSON.stringify(trs))
-{"type":14,"amount":0,"fee":10000000,"recipientId":"AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a","senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19481489,"asset":{"aobTransfer":{"currency":"IssuerName.CNY","amount":"10000"}},"signature":"77789071a2ad6d407b9d1e0d654a9deb6d85340a3d2a13d786030e26ac773b4e9b5f052589958d2b8553ae5fc9449496946b5c225e0baa723e7ddecbd89f060a","signSignature":"f0d4a000aae3dd3fa48a92f792d4318e41e3b56cdbaf98649261ae34490652b87645326a432d5deb69f771c133ee4b67d2d22789197be34249e6f7f0c30c1705"}
+{"type":65,"nethash":"0ab796cd","amount":"0","recipient_id":"DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q","sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55108730,"message":"测试转账","asset":{"aobTransfer":{"currency":"DDD.NCR","amount":"10"}},"fee":"10000000","signature":"f0e5cb2b832ff662c3da84b5fbb18860da4f6501679e6b2f1009f5dc24c6a75677a0fdc8812c4e9c28fbbe3f1f24b84089f366899811f365791474b5d49b2605"}
 
 // 给AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a发送10.000 IssuerName.CNY资产
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":14,"amount":0,"fee":10000000,"recipientId":"AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a","senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19481489,"asset":{"aobTransfer":{"currency":"IssuerName.CNY","amount":"10000"}},"signature":"77789071a2ad6d407b9d1e0d654a9deb6d85340a3d2a13d786030e26ac773b4e9b5f052589958d2b8553ae5fc9449496946b5c225e0baa723e7ddecbd89f060a","signSignature":"f0d4a000aae3dd3fa48a92f792d4318e41e3b56cdbaf98649261ae34490652b87645326a432d5deb69f771c133ee4b67d2d22789197be34249e6f7f0c30c1705"}}' 'http://localhost:8001/peer/transactions' && echo
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":65,"nethash":"0ab796cd","amount":"0","recipient_id":"DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q","sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55108730,"message":"测试转账","asset":{"aobTransfer":{"currency":"DDD.NCR","amount":"10"}},"fee":"10000000","signature":"f0e5cb2b832ff662c3da84b5fbb18860da4f6501679e6b2f1009f5dc24c6a75677a0fdc8812c4e9c28fbbe3f1f24b84089f366899811f365791474b5d49b2605"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}		
+{"success":true,"transactionId": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462"}		
 ```
  
 #### **2.1.7 资产注销** 
@@ -257,7 +291,7 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|transaction|json|Y|DdnJS.aob.createFlags根据资产名字、注销状态、黑白名单模式、一级密码、二级密码生成的交易数据|
+|transaction|json|Y|ddnsdk.assetPlugin.createPluginAsset根据资产名字、注销状态、黑白名单模式、一级密码、二级密码生成的交易数据|
 
 返回参数说明：   
 
@@ -268,21 +302,25 @@ JSON返回示例：
    
 请求示例：   
 ```js   
-var currency = 'IssuerName.CNY'
-// flagType为资产是否注销，1：流通，2：注销
-var flagType = 2
-// flag为黑、白名单模式
-var flag =1
-var trs = DdnJS.aob.createFlags(currency, flagType, flag, secret, secondSecret)
-console.log(JSON.stringify(trs))
-{"type":11,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19488690,"asset":{"aobFlags":{"currency":"IssuerName.CNY","flagType":2,"flag":1}},"signature":"cbd656552417604704703e1236ec2bbed8eba6a2ccfcb54cc0b2d629c0a9d1335a264fc9f6dee1705f4a86c36a5ce2ba8e039d913a189b7c273c8ac0d9e3780c","signSignature":"3c7b91d03efeed2dc86e1f2301da60789751c1be8850460d8c66c0ae8f55ea27d26f0bc79541d74b4777d9b85c518c1c73c0284dbf3e826db0a686560e57a80b"}
+var obj = {
+    currency: "DDD.NCR",
+    flag: 1,    //flag_type=1（0：使用黑名单，1：使用白名单，2：全开放），flag_type=2（0：流通，1：注销）
+    flag_type: 2    //1：黑白名单设置，2：注销设置
+}
+//初始化sdk，初始化方法在系统中只需要初始化一次，建议在系统启动后初始化一次即可
+ddnsdk.init.init('nethash');
+// 构造交易数据
+var trs = await ddnsdk.assetPlugin.createPluginAsset(62, obj, secret, secondSecret)
 
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":11,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575","timestamp":19488690,"asset":{"aobFlags":{"currency":"IssuerName.CNY","flagType":2,"flag":1}},"signature":"cbd656552417604704703e1236ec2bbed8eba6a2ccfcb54cc0b2d629c0a9d1335a264fc9f6dee1705f4a86c36a5ce2ba8e039d913a189b7c273c8ac0d9e3780c","signSignature":"3c7b91d03efeed2dc86e1f2301da60789751c1be8850460d8c66c0ae8f55ea27d26f0bc79541d74b4777d9b85c518c1c73c0284dbf3e826db0a686560e57a80b"}}' 'http://localhost:8001/peer/transactions' && echo
+console.log(JSON.stringify(trs))
+{"type":62,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55109270,"message":null,"asset":{"aobFlags":{"currency":"DDD.NCR","flag":1,"flag_type":2}},"fee":"10000000","signature":"5121c6994af989454d00b87773f8df9b974438c1ebc923646a703e2acd8d8f5b856e6ad641aef3edd47f4df818a284984cbbf19c30f61bbfbce07db828dee501"}
+
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":62,"nethash":"0ab796cd","amount":"0","recipient_id":null,"sender_public_key":"0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c","timestamp":55109270,"message":null,"asset":{"aobFlags":{"currency":"DDD.NCR","flag":1,"flag_type":2}},"fee":"10000000","signature":"5121c6994af989454d00b87773f8df9b974438c1ebc923646a703e2acd8d8f5b856e6ad641aef3edd47f4df818a284984cbbf19c30f61bbfbce07db828dee501"}}' 'http://localhost:8001/peer/transactions' && echo
 ```   
    
 JSON返回示例：   
 ```js  
-{"success":true}		
+{"success":true,"transactionId": "b207914295302b8f590376f509afb07b8d7c33d6d8b423a13fe58a48a4f633d4"}		
 ```  
 
 
@@ -296,7 +334,7 @@ get /peer/blocks/common //查找common block
 ### **2.2 用户自定义资产aob**  
 
 #### **2.2.1 创建资产**   
-接口地址：/api/aob/transfers   
+接口地址：/api/aobtransfer/transfers   
 请求方式：PUT   
 支持格式：json   
 接口备注：   
@@ -324,8 +362,8 @@ get /peer/blocks/common //查找common block
    
 请求示例：   
 ```bash   
-// 转0.01 absorb.YLB给D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"found knife gather faith wrestle private various fame cover response security predict","amount":"1000000","recipientId":"D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC","currency":"absorb.YLB"}' 'http://localhost:8001/api/aob/transfers' && echo   
+// 转0.1DDD.NCR给DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"elite sunset cake shaft human cradle remember select flame panther tongue ancient","amount":"10","recipientId":"DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q","currency":"DDD.NCR"}' 'http://localhost:8001/api/aobtransfer/transfers' && echo   
 ```   
    
 JSON返回示例：   
@@ -337,7 +375,7 @@ JSON返回示例：
 ```  
 
 #### **2.2.2 获取全网所有发行商**  
-接口地址：/api/aob/issuers  
+接口地址：/api/aobissuer/issuers  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -345,42 +383,44 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|issuers|list|元素为字典，每个字典代表一个发行商，包含发行商名字、描述、id（Ddn地址）|
-|count|integer|发行商总个数|
+|rows|list|元素为字典，每个字典代表一个发行商，包含发行商名字、描述、id（Ddn地址）|
+|total|integer|发行商总个数|
 
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://testnet.ddn.so:8001/api/aob/issuers?offset=0&limit=1' && echo
+curl -X GET -H "Content-Type: application/json"  'localhost:8001/api/aobissuer/issuers?pageindex=1&pagesize=10' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"issuers": [{
-		"name": "huoding",
-		"desc": "注册资产发行商-测试",
-		"issuerId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a"
-	},
-	{
-		"name": "speedtest",
-		"desc": "speedtest",
-		"issuerId": "AEVWQWAq3TEJkCPSDxXMP2uCRrL2xbQnsy"
-	}],
-	"count": 6
-}		
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "transaction_id": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632",
+        "transaction_type": 60,
+        "timestamp": 55102937,
+        "name": "DDD",
+        "issuer_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "desc": "J G V"
+      }
+    ],
+    "total": 1
+  }
+}
 ``` 
 
 #### **2.2.3 查询指定发行商的信息** 
-接口地址：/api/aob/issuers/:name  
+接口地址：/api/aobissuer/issuers/:name  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -395,27 +435,30 @@ JSON返回示例：
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|issuers|dict|包含发行商名字、描述、id（Ddn地址）|
+|result|dict|包含发行商名字、描述、id（Ddn地址）|
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://testnet.ddn.so:8001/api/aob/issuers/huoding' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobissuer/issuers/DDD' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"issuer": {
-		"name": "huoding",
-		"desc": "注册资产发行商-测试",
-		"issuerId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a"
-	}
-}		
+  "success": true,
+  "result": {
+    "transaction_id": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632",
+    "transaction_type": 60,
+    "timestamp": 55102937,
+    "name": "DDD",
+    "issuer_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+    "desc": "J G V"
+  }
+}
 ``` 
 
 #### **2.2.4 查看指定发行商的资产** 
-接口地址：/api/aob/issuers/:name/assets  
+接口地址：/api/aobasset/issuers/:name/assets   
 请求方式：get   
 支持格式：urlencoded 
 
@@ -424,46 +467,55 @@ JSON返回示例：
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
 |name|string|Y|可以为发行商名称或Ddn账户地址|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|assets|list|每个元素是一个字典，每个字典是一个资产详情，包含资产名字、描述、上限（最大发行量=真实发行量*10**精度）、精度、策略、当前发行量、发行高度、发行商id，acl模式（0：黑名单，1：白名单）、是否注销|
-|count|interger|该发行商注册的资产总个数（包含已注销的）|
+|rows|list|每个元素是一个字典，每个字典是一个资产详情，包含资产名字、描述、上限（最大发行量=真实发行量*10**精度）、精度、策略、当前发行量、发行高度、发行商id，acl模式（0：黑名单，1：白名单）、是否注销|
+|total|interger|该发行商注册的资产总个数（包含已注销的）|
 
    
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://testnet.ddn.so:8001/api/aob/issuers/huoding/assets?offset=0&limit=2' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobasset/issuers/DDD/assets?pageindex=1&pagesize=10' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"assets": [{
-		"name": "huoding.AOB",
-		"desc": "注册资产-测试",
-		"maximum": "10000000",
-		"precision": 3,
-		"strategy": "",
-		"quantity": "1000000",
-		"height": 301,
-		"issuerId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a",
-		"acl": 0,
-		"writeoff": 1
-	}],
-	"count": 1
-}		
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "transaction_id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+        "transaction_type": 61,
+        "timestamp": 55103637,
+        "name": "DDD.NCR",
+        "desc": "DDD新币种",
+        "maximum": "100000000",
+        "quantity": "50000000",
+        "issuer_name": "DDD",
+        "strategy": "",
+        "precision": 2,
+        "acl": 1,
+        "writeoff": 1,
+        "allow_writeoff": "1",
+        "allow_whitelist": "1",
+        "allow_blacklist": "1"
+      }
+    ],
+    "total": 1
+  }
+}
 ``` 
 
 #### **2.2.5 获取全网所有资产信息** 
-接口地址：/api/aob/assets  
+接口地址：/api/aobasset/list  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -471,58 +523,56 @@ JSON返回示例：
 
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|assets|list|每个元素是一个字典，每个字典是一个资产详情，包含资产名字、描述、上限、精度、策略、当前发行量、发行高度、发行商id，acl、是否注销|
-|count|integer|所有资产的个数|
+|rows|list|每个元素是一个字典，每个字典是一个资产详情，包含资产名字、描述、上限、精度、策略、当前发行量、发行高度、发行商id，acl、是否注销|
+|total|integer|所有资产的个数|
 
    
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://testnet.ddn.so:8001/api/aob/assets?offset=0&limit=2' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobasset/list?pageindex=1&pagesize=10' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"assets": [{
-		"name": "huoding.AOB",
-		"desc": "注册资产-测试",
-		"maximum": "10000000",
-		"precision": 3,
-		"strategy": "",
-		"quantity": "1000000",
-		"height": 301,
-		"issuerId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a",
-		"acl": 0,
-		"writeoff": 1
-	},
-	{
-		"name": "speedtest.SPEED",
-		"desc": "测速",
-		"maximum": "10000",
-		"precision": 1,
-		"strategy": "",
-		"quantity": "10000",
-		"height": 380,
-		"issuerId": "AEVWQWAq3TEJkCPSDxXMP2uCRrL2xbQnsy",
-		"acl": 0,
-		"writeoff": 0
-	}],
-	"count": 13
-}		
+  "success": true,
+  "state": 0,
+  "data": {
+    "rows": [
+      {
+        "transaction_id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+        "transaction_type": 61,
+        "timestamp": 55103637,
+        "name": "DDD.NCR",
+        "desc": "DDD新币种",
+        "maximum": "100000000",
+        "quantity": "50000000",
+        "issuer_name": "DDD",
+        "strategy": "",
+        "precision": 2,
+        "acl": 1,
+        "writeoff": 1,
+        "allow_writeoff": "1",
+        "allow_whitelist": "1",
+        "allow_blacklist": "1"
+      }
+    ],
+    "total": 1
+  }
+}
 ``` 
 
 #### **2.2.6 获取指定资产信息** 
-接口地址：/api/aob/assets/:name  
+接口地址：/api/aobasset/:name  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -537,34 +587,39 @@ JSON返回示例：
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|assets|dict|包含资产名字、描述、上限、精度、策略、当前发行量、发行高度、发行商id，acl、是否注销|
+|result|dict|包含资产名字、描述、上限、精度、策略、当前发行量、发行高度、发行商id，acl、是否注销|
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://testnet.ddn.so:8001/api/aob/assets/huoding.AOB' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobasset/DDD.NCR' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"asset": {
-		"name": "huoding.AOB",
-		"desc": "注册资产-测试",
-		"maximum": "10000000",
-		"precision": 3,
-		"strategy": "",
-		"quantity": "1000000",
-		"height": 301,
-		"issuerId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a",
-		"acl": 0,
-		"writeoff": 1
-	}
-}		
+  "success": true,
+  "result": {
+    "transaction_id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+    "transaction_type": 61,
+    "timestamp": 55103637,
+    "name": "DDD.NCR",
+    "desc": "DDD新币种",
+    "maximum": "100000000",
+    "quantity": "50000000",
+    "issuer_name": "DDD",
+    "strategy": "",
+    "precision": 2,
+    "acl": 1,
+    "writeoff": 1,
+    "allow_writeoff": "1",
+    "allow_whitelist": "1",
+    "allow_blacklist": "1"
+  }
+}
 ``` 
 
 #### **2.2.7 获取指定资产的访问控制列表（acl）** 
-接口地址：/api/aob/assets/:name/acl/flag  
+接口地址：/api/aobasset/:name/acl/:flag
 请求方式：get   
 支持格式：urlencoded 
 
@@ -582,32 +637,35 @@ JSON返回示例：
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|list|list|符合规则的账户列表|
-|count|integer|符合规则账户总数|
+|rows|list|符合规则的账户列表|
+|total|integer|符合规则账户总数|
 
    
 请求示例：   
 ```js   
-// 获取资产huoding.AOB白名单中的地址列表
-curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aob/assets/huoding.AOB/acl/1' && echo
+// 获取资产DDD.NCR白名单中的地址列表
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobasset/DDD.NCR/acl/1' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"list": [{
-		"address": "15745540293890213312"
-	},
-	{
-		"address": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a"
-	}],
-	"count": 2
-}		
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "id": 1,
+        "currency": "DDD.NCR",
+        "address": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"
+      }
+    ],
+    "total": 1
+  }
+}
 ``` 
 
 #### **2.2.8 获取指定账户所有aob的余额** 
-接口地址：/api/aob/balances/:address  
+接口地址：/api/aobasset/balances/:address  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -616,48 +674,36 @@ JSON返回示例：
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
 |address|string|Y|账户地址|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|balances|list|拥有的资产详情列表，每个元素是一个资产，包含资产名、余额、上限、精度、当前发行量、是否注销（0：未注销，1：已注销）|
-|count|integer|当前该地址拥有的资产个数|
+|result|list|拥有的资产详情列表，每个元素是一个资产，包含资产名、余额、上限、精度、当前发行量、是否注销（0：未注销，1：已注销）|
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aob/balances/AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a' && echo
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aobasset/balances/DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"balances": [{
-		"currency": "huoding.AOB",
-		"balance": "900000",
-		"maximum": "10000000",
-		"precision": 3,
-		"quantity": "1000000",
-		"writeoff": 1
-	},
-	{
-		"currency": "speedtest.SPEED",
-		"balance": "400",
-		"maximum": "10000",
-		"precision": 1,
-		"quantity": "10000",
-		"writeoff": 0
-	}],
-	"count": 2
-}		
+  "success": true,
+  "result": [
+    {
+      "id": 2,
+      "address": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q",
+      "balance": "10",
+      "currency": "DDD.NCR"
+    }
+  ]
+}
 ```
 
 #### **2.2.9 获取指定账户所有资产相关操作记录** 
-接口地址：/api/aob/transactions/my/:address  
+接口地址：/api/aobtransfer/transactions/my/:address  
 请求方式：get   
 支持格式：urlencoded  
 备注：包含发行商创建以及资产创建、发行、转账等  
@@ -667,163 +713,340 @@ JSON返回示例：
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
 |address|string|Y|账户地址|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|transactions|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|
-|count|integer|资产交易总个数|
+|rows|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|
+|total|integer|资产交易总个数|
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aob/my/transactions/16358246403719868041?offset=0&limit=2' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobtransfer/transactions/my/DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ?pageindex=1&pagesize=10' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"transactions": [{
-		"id": "12372526051670720162",   // 交易id
-		"height": "286",    // 交易所在区块高度
-		"blockId": "14863181420651287815",  // 交易所在区块id
-		"type": 9,  // 交易类型，9代表注册发行商
-		"timestamp": 17597873,  // 交易时间，距离创世块的offset
-		"senderPublicKey": "d39d6f26869067473d685da742339d1a9117257fe14b3cc7261e3f2ed5a339e3",  // 交易发起者公钥
-		"senderId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a",   // 交易发起者id
-		"recipientId": "",  //  接收者id，如果是系统则为空
-		"amount": 0,    //  交易数量，如果是资产或者DDN则为非0，否则为0
-		"fee": 10000000,    // 交易费
-		"signature": "6a1e66387f610de5a89489105697082037b82bff4fb6f95f9786304176efe59f7d41e8fe9c5501e1b0b34a47e957a38e10e940fdb180f8ebcaf0ac062a63c601", // 交易签名
-		"signSignature": "",    // 二级签名，有二级密码时才有
-		"signatures": null, // 多重签名，使用多重签名账户时才有
-		"confirmations": "155998",  // 交易确认数
-		"asset": {
-			"aobIssuer": {
-				"transactionId": "12372526051670720162",    // 交易id
-				"name": "huoding",   // 发行商名字
-				"desc": "注册资产发行商-测试"   // 发行商描述
-			}
-		},
-		"t_id": "12372526051670720162"  // 交易id
-	},
-	{
-		"id": "17308768226103450697",
-		"height": "371",
-		"blockId": "244913990990213995",
-		"type": 9,
-		"timestamp": 17598730,
-		"senderPublicKey": "7bd645f9626820d390311fb28dc30875e8bd26cce2d04ba2809df82e84088020",
-		"senderId": "AEVWQWAq3TEJkCPSDxXMP2uCRrL2xbQnsy",
-		"recipientId": "",
-		"amount": 0,
-		"fee": 10000000,
-		"signature": "6ea76ff6f58f1bc99d6b40ece45e371948db58a68f6fa41e13b34ff86bbf1f0bea53d6afe982562392861727f879205efc7d1342f6e963028985e243a94e5507",
-		"signSignature": "",
-		"signatures": null,
-		"confirmations": "155913",
-		"asset": {
-			"aobIssuer": {
-				"transactionId": "17308768226103450697",
-				"name": "speedtest",
-				"desc": "speedtest"
-			}
-		},
-		"t_id": "17308768226103450697"
-	}],
-	"count": 58
-}		
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "id": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632",
+        "height": "6",
+        "block_id": "7a48430fcbbad24cd7fc23691c7aead618fa99b19ef83229fddd6f0484f2aafe",
+        "type": 60,
+        "timestamp": 55102937,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "10000000000",
+        "signature": "f8503ee19d2fb1798847cbb66346daf01bf34e0278caa5a9aa51dcd6a7a7081ef45f01ed76518d01169133571f610de1e074a1012d6fd23703a4b35393b0ae0a",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 721,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobIssuer": {
+            "transaction_id": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632",
+            "transaction_type": 60,
+            "timestamp": 55102937,
+            "name": "DDD",
+            "issuer_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+            "desc": "J G V"
+          }
+        }
+      },
+      {
+        "id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+        "height": "14",
+        "block_id": "3b722e8499cd4e8e5dd9a497500f3b9c3dcc1ed04b1d04471081ec8dcbaabb73",
+        "type": 61,
+        "timestamp": 55103637,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "50000000000",
+        "signature": "6a197b7533d6d74bd15d0ffd873db6c841bcd729aec531b5987c02ba94e4c507dd5f085821f10a4dc152c20180b9989303083df1355ac506c0a50f2d0b45da05",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 713,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobAsset": {
+            "transaction_id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+            "transaction_type": 61,
+            "timestamp": 55103637,
+            "name": "DDD.NCR",
+            "desc": "DDD新币种",
+            "maximum": "100000000",
+            "quantity": "50000000",
+            "issuer_name": "DDD",
+            "strategy": "",
+            "precision": 2,
+            "acl": 1,
+            "writeoff": 1,
+            "allow_writeoff": "1",
+            "allow_whitelist": "1",
+            "allow_blacklist": "1"
+          }
+        }
+      },
+      {
+        "id": "abdcca8e2d7120b8383021a6e94494d72bada96cbb2a6c77e228e9bbe310a97e",
+        "height": "16",
+        "block_id": "3016be108a52eb425de813b63ee41deb8ca50ba5985f4073cfbcba997e0022e9",
+        "type": 62,
+        "timestamp": 55104595,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "79dd60164b3acf300dca9f81b0f032114d5c54448d1fee3a0bd43157ae54b54d3307a3c8eeca4f464c49a6a02265b1e3f2d553c48799f94d8f0437d417c0e305",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 711,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobFlags": {
+            "transaction_id": "abdcca8e2d7120b8383021a6e94494d72bada96cbb2a6c77e228e9bbe310a97e",
+            "transaction_type": 62,
+            "timestamp": 55104595,
+            "currency": "DDD.NCR",
+            "flag": 1,
+            "flag_type": 1
+          }
+        }
+      },
+      {
+        "id": "fd56923bdff348eb2d74d9736947fc5a98862b3f01fe0c7ad608819429902c84",
+        "height": "30",
+        "block_id": "51f7cd014fcd4f1310f72a6f6ef06c4c59b48718cf265b7e34d3a879f4093d10",
+        "type": 63,
+        "timestamp": 55105961,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "5d81ebd68af2c2e314b9ca2bae99cbd538933325cf4965b510b88319a67c82f901c2a2e234fe220d6d5424c8deddd0f34e6eb5c326e1360e31118a4db64b5e07",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 697,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobAcl": {
+            "transaction_id": "fd56923bdff348eb2d74d9736947fc5a98862b3f01fe0c7ad608819429902c84",
+            "transaction_type": 63,
+            "timestamp": 55105961,
+            "currency": "DDD.NCR",
+            "flag": 1,
+            "operator": "+",
+            "list": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"
+          }
+        }
+      },
+      {
+        "id": "7a607625c9d3ddcadc1a645c4050a6e6f87bfe800990d28b5b96bac9a3701740",
+        "height": "247",
+        "block_id": "4ad1e32ef9cf4c6bae2fdac5f295cabc949f1bf169c0ba49cdc86f23bac92d4f",
+        "type": 64,
+        "timestamp": 55108465,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "968df5d4853b0f6f78447dbd4e08f53f27a5825121e0c6f62adda81ee6cca8e602b5c6018a175b06dbe7125e099f200da24e972411246b462ba4b96a54b1b00d",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 480,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobIssue": {
+            "transaction_id": "7a607625c9d3ddcadc1a645c4050a6e6f87bfe800990d28b5b96bac9a3701740",
+            "transaction_type": 64,
+            "timestamp": 55108465,
+            "currency": "DDD.NCR",
+            "amount": "50000000"
+          }
+        }
+      },
+      {
+        "id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+        "height": "274",
+        "block_id": "c814eca7aba5796e836e8f927e2614484086293945d378e0f7a8ea7c6b889a6a",
+        "type": 65,
+        "timestamp": 55108730,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q",
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "f0e5cb2b832ff662c3da84b5fbb18860da4f6501679e6b2f1009f5dc24c6a75677a0fdc8812c4e9c28fbbe3f1f24b84089f366899811f365791474b5d49b2605",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 453,
+        "args": null,
+        "message": "测试转账",
+        "asset": {
+          "aobTransfer": {
+            "transaction_id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+            "transaction_type": 65,
+            "timestamp": 55108730,
+            "currency": "DDD.NCR",
+            "amount": "10"
+          }
+        }
+      },
+      {
+        "id": "b207914295302b8f590376f509afb07b8d7c33d6d8b423a13fe58a48a4f633d4",
+        "height": "327",
+        "block_id": "e10838cf705067e7e240599c18bb3c46ae7c1d4ef98d847187ee0a19f747b13d",
+        "type": 62,
+        "timestamp": 55109270,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": null,
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "5121c6994af989454d00b87773f8df9b974438c1ebc923646a703e2acd8d8f5b856e6ad641aef3edd47f4df818a284984cbbf19c30f61bbfbce07db828dee501",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 400,
+        "args": null,
+        "message": null,
+        "asset": {
+          "aobFlags": {
+            "transaction_id": "b207914295302b8f590376f509afb07b8d7c33d6d8b423a13fe58a48a4f633d4",
+            "transaction_type": 62,
+            "timestamp": 55109270,
+            "currency": "DDD.NCR",
+            "flag": 1,
+            "flag_type": 2
+          }
+        }
+      }
+    ],
+    "total": 7
+  }
+}
 ```
 
 
 说明：
-    注意这里asset内容与type相关，9 <= type <= 14， 根据不同的type从asset中取出不同的值，详情如下：
+    注意这里asset内容与type相关，60 <= type <= 65， 根据不同的type从asset中取出不同的值，详情如下：
 
 ```
-type=9
+type=60
 "asset": {
-                "aobIssuer": {
-                    "transactionId": "260434858608363290",
-                    "name": "issuername",
-                    "desc": "issuer1_desc"
-                }
-            },
-展示： 注册了发行商"issuername"
-```
-
-```
-type=10
-"asset": {
-                "aobAsset": {
-                    "transactionId": "11613326283813789432",
-                    "name": "issuername.BTC",
-                    "desc": "asset1_desc",
-                    "maximum": "10000000000000",
-                    "precision": "6",
-                    "strategy": ""
-                }
-            },
-展示： 注册了资产"issuername.BTC"
+          "aobIssuer": {
+            "transaction_id": "3e36865ed64e19453b5f5d9523c0b6cd8e1e3a77bd890f1ba5426d3ccdc5f632",
+            "transaction_type": 60,
+            "timestamp": 55102937,
+            "name": "DDD",
+            "issuer_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+            "desc": "J G V"
+          }
+        }
+展示： 注册了发行商"DDD"
 ```
 
 ```
-type=11
+type=61
 "asset": {
-                "aobFlags": {
-                    "transactionId": "14649028077581400942",
-                    "currency": "issuername.BTC",
-                    "flagType": "1",
-                    "flag": "1"
-                }
-            },
+          "aobAsset": {
+            "transaction_id": "2198b87be0288161c3319bce379c7873f1b6adaab2c16b55847f9e6159413fe1",
+            "transaction_type": 61,
+            "timestamp": 55103637,
+            "name": "DDD.NCR",
+            "desc": "DDD新币种",
+            "maximum": "100000000",
+            "quantity": "50000000",
+            "issuer_name": "DDD",
+            "strategy": "",
+            "precision": 2,
+            "acl": 1,
+            "writeoff": 1,
+            "allow_writeoff": "1",
+            "allow_whitelist": "1",
+            "allow_blacklist": "1"
+          }
+        }
+展示： 注册了资产"DDD.NCR"
+```
+
+```
+type=62
+"asset": {
+          "aobFlags": {
+            "transaction_id": "abdcca8e2d7120b8383021a6e94494d72bada96cbb2a6c77e228e9bbe310a97e",
+            "transaction_type": 62,
+            "timestamp": 55104595,
+            "currency": "DDD.NCR",
+            "flag": 1,
+            "flag_type": 1
+          }
+        }
 展示: 
-如果$flagType==1 ： 资产issuername.BTC访问控制设置为(flag==0?黑名单：白名单)
-如果$flagType==2 ： 资产issuername.BTC被注销
+如果flag_type==1 ： 资产DDD.NCR访问控制设置为(flag==0 ? 黑名单 ：白名单)
+如果flag_type==2 ： 资产DDD.NCR被注销
 ```
 
 ```
-type=12
+type=63
 "asset": {
-                "aobAcl": {
-                    "transactionId": "16597707943986371131",
-                    "currency": "issuername.BTC",
-                    "operator": "+",
-                    "flag": "1",
-                    "list": [
-                        "196751217687897827",
-                        "11053997261735317227"
-                    ]
-                }
-            },
-展示：资产issuername.BTC更新了访问控制列表
+          "aobAcl": {
+            "transaction_id": "fd56923bdff348eb2d74d9736947fc5a98862b3f01fe0c7ad608819429902c84",
+            "transaction_type": 63,
+            "timestamp": 55105961,
+            "currency": "DDD.NCR",
+            "flag": 1,
+            "operator": "+",
+            "list": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q"
+          }
+        }
+展示：资产DDD.NCR更新了访问控制列表
 ```
 
 ```
-type=13
+type=64
 "asset": {
-                "aobIssue": {
-                    "transactionId": "10646196155790595088",
-                    "currency": "issuername.BTC",
-                    "amount": "10000000000"
-                }
-            },
-展示： 资产issuername.BTC新发行10000000000(实际数量*精度)
+          "aobIssue": {
+            "transaction_id": "7a607625c9d3ddcadc1a645c4050a6e6f87bfe800990d28b5b96bac9a3701740",
+            "transaction_type": 64,
+            "timestamp": 55108465,
+            "currency": "DDD.NCR",
+            "amount": "50000000"
+          }
+        }
+展示： 资产DDD.NCR新发行50000000(实际数量*精度)
 ```
 
 ```
-type=14
+type=65
 "asset": {
-                "aobTransfer": {
-                    "transactionId": "9105235822289198060",
-                    "currency": "issuername.BTC",
-                    "amount": "10"
-                }
-            },
-展示：转账10个issuername.BTC资产，交易id是9105235822289198060
+          "aobTransfer": {
+            "transaction_id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+            "transaction_type": 65,
+            "timestamp": 55108730,
+            "currency": "DDD.NCR",
+            "amount": "10"
+          }
+        }
+展示：转账10个DDD.NCR资产
 ```
 
 
@@ -831,7 +1054,7 @@ type=14
 
 
 #### **2.2.10 获取指定账户指定资产的余额** 
-接口地址：/api/aob/balances/:address/:currency  
+接口地址：/api/aobasset/balances/:address/:currency  
 请求方式：get   
 支持格式：urlencoded 
 
@@ -841,38 +1064,34 @@ type=14
 |------ |-----  |---  |----              |   
 |address|string|Y|Ddn地址|
 |currency|string|Y|资产名字|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|balances|dict|包含资产名、余额、最大发行量、精度、当前发行量、是否注销|
+|result|dict|包含资产名、余额、最大发行量、精度、当前发行量、是否注销|
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aob/balances/16358246403719868041/IssuerName.CNY' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobasset/balances/DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ/DDD.NCR' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"balance": {
-		"currency": "IssuerName.CNY",
-		"balance": "80000",
-		"maximum": "1000000",
-		"precision": 3,
-		"quantity": "100000",
-		"writeoff": 1
-	}
-}	
+  "success": true,
+  "result": {
+    "id": 1,
+    "address": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+    "balance": "49999990",
+    "currency": "DDD.NCR"
+  }
+}
 ```
 
 #### **2.2.11 获取指定账户指定资产转账记录** 
-接口地址：/api/aob/transactions/my/:address/:currency  
+接口地址：/api/aobtransfer/transactions/my/:address/:currency  
 请求方式：get   
 支持格式：urlencoded  
 备注：只返回资产转账记录  
@@ -883,57 +1102,63 @@ JSON返回示例：
 |------ |-----  |---  |----              |   
 |address|string|Y|Ddn地址|
 |currency|string|Y|资产名字|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|transactions|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|  
-|count|integer|资产交易总个数|  
+|rows|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|  
+|total|integer|资产交易总个数|  
    
 请求示例：   
 ```js   
-curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aob/transactions/my/16358246403719868041/IssuerName.CNY' && echo
+curl -X GET -H "Content-Type: application/json"  'http://localhost:8001/api/aobtransfer/transactions/my/DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ/DDD.NCR' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	"success": true,
-	"transactions": [{
-		"id": "d6102fc30931e4dc449811cbbab705fd64bc79b09de703e8172f7bdd90835abc",
-		"height": "173109",
-		"blockId": "baa23acd566780e338436b48e4eb79a87d3bdd67caeb3812a663da8f77ae87d9",
-		"type": 14,
-		"timestamp": 19481489,
-		"senderPublicKey": "fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575",
-		"senderId": "16358246403719868041",
-		"recipientId": "AKKHPvQb2A119LNicCQWLZQDFxhGVEY57a",
-		"amount": 0,
-		"fee": 10000000,
-		"signature": "77789071a2ad6d407b9d1e0d654a9deb6d85340a3d2a13d786030e26ac773b4e9b5f052589958d2b8553ae5fc9449496946b5c225e0baa723e7ddecbd89f060a",
-		"signSignature": "f0d4a000aae3dd3fa48a92f792d4318e41e3b56cdbaf98649261ae34490652b87645326a432d5deb69f771c133ee4b67d2d22789197be34249e6f7f0c30c1705",
-		"signatures": null,
-		"confirmations": "90853",
-		"asset": {
-			"aobTransfer": {
-				"transactionId": "d6102fc30931e4dc449811cbbab705fd64bc79b09de703e8172f7bdd90835abc",
-				"currency": "IssuerName.CNY",
-				"amount": "10000",
-				"amountShow": "10"
-			}
-		},
-		"t_id": "d6102fc30931e4dc449811cbbab705fd64bc79b09de703e8172f7bdd90835abc"
-	}],
-	"count": 15
-}	
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+        "height": "274",
+        "block_id": "c814eca7aba5796e836e8f927e2614484086293945d378e0f7a8ea7c6b889a6a",
+        "type": 65,
+        "timestamp": 55108730,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q",
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "f0e5cb2b832ff662c3da84b5fbb18860da4f6501679e6b2f1009f5dc24c6a75677a0fdc8812c4e9c28fbbe3f1f24b84089f366899811f365791474b5d49b2605",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 442,
+        "args": null,
+        "message": "测试转账",
+        "asset": {
+          "aobTransfer": {
+            "transaction_id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+            "transaction_type": 65,
+            "timestamp": 55108730,
+            "currency": "DDD.NCR",
+            "amount": "10"
+          }
+        }
+      }
+    ],
+    "total": 1
+  }
+}
 ```
 
 #### **2.2.12 获取指定资产转账记录** 
-接口地址：/api/aob/transactions/:currency  
+接口地址：/api/aobtransfer/transactions/:currency  
 请求方式：get   
 支持格式：urlencoded  
 备注：只返回指定资产转账记录 
@@ -943,81 +1168,58 @@ JSON返回示例：
 |名称	|类型   |必填 |说明              |   
 |------ |-----  |---  |----              |   
 |currency|string|Y|资产名字|
-|limit|integer|N|限制结果集个数，最小值：0,最大值：100|
-|offset|integer|N|偏移量，最小值0|
+|pageindex|integer|N|分页查询页数，默认1|
+|pagesize|integer|N|分页查询每页大小，默认50|
 
 返回参数说明：   
 
 |名称	|类型   |说明              |   
 |------ |-----  |----              |   
 |success|boolean  |是否成功 |  
-|transactions|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|  
-|count|integer|该资产交易总数|  
+|rows|list|交易列表，每个元素是一个字典代表一次交易，包含交易id、区块高度、区块id、交易类型、时间戳、发送者公钥、发送者id、接收者id（系统为空，如资产注册）、交易数量（资产交易都为0）、手续费0.1DDN、签名、多重签名、确认数、资产信息（包含发行商id、发行商名字、描述）、交易id。|  
+|total|integer|该资产交易总数|  
    
 请求示例：   
 ```js   
 // 查询引力波资产absorb.YLB的所有转账记录 
-curl -X GET -H "Content-Type: application/json" 'http://127.0.0.1:8001/api/aob/transactions/absorb.YLB' && echo
+curl -X GET -H "Content-Type: application/json" 'http://localhost:8001/api/aobtransfer/transactions/DDD.NCR' && echo
 ```   
    
 JSON返回示例：   
 ```js  
 {
-	success: true,
-	transactions: [{
-		id: "a1ff79e3f37fd73b41abd293c22171ac7760160ad457e55f028e7a8b527651d3",
-		height: "43",
-		blockId: "b16b87e79b47edffdc2fd93bd1de70cbe3541684d5dbf8dc1d292903275e03dc",
-		type: 14,
-		timestamp: 39167334,
-		senderPublicKey: "2856bdb3ed4c9b34fd2bba277ffd063a00f703113224c88c076c0c58310dbec4",
-		senderId: "ANH2RUADqXs6HPbPEZXv4qM8DZfoj4Ry3M",
-		recipientId: "AMzDw5BmZ39we18y7Ty9VW79eL9k7maZPH",
-		amount: 0,
-		fee: 10000000,
-		signature: "a4e6b0e2c265e0d601fdfc9e82d971e7908457383835b801c725cdaac01bd619a435344241c64247599255f43a43b6576e1da3a357eac5bbd7058e013a8aa60e",
-		signSignature: "",
-		signatures: null,
-		confirmations: "809",
-		args: null,
-		message: "",
-		asset: {
-			aobTransfer: {
-				transactionId: "a1ff79e3f37fd73b41abd293c22171ac7760160ad457e55f028e7a8b527651d3",
-				currency: "absorb.YLB",
-				amount: "200000000",
-				amountShow: "2",
-				precision: 8
-			}
-		}
-	},
-	{
-		id: "7cf50223e12b6eb51096353a066befcf2ef862bdd4d4eddcba28a79aa0249af9",
-		height: "809",
-		blockId: "278b096893bc028bb79692faec02de8c2f367804485b71f14e46027f3dd3000c",
-		type: 14,
-		timestamp: 39182041,
-		senderPublicKey: "b33b5fc45640cfc414981985bf92eef962c08c53e1a34f90dab039e985bb5fab",
-		senderId: "AMzDw5BmZ39we18y7Ty9VW79eL9k7maZPH",
-		recipientId: "1",
-		amount: 0,
-		fee: 10000000,
-		signature: "560bd31a4efe103ef9bd92f52cae5cf5a3b2aeb90fc83298498ff4126705e0433f751169bc32a3a7cfe894c7d8586d7182ebc790f2311daf9f02b881dc2aca0e",
-		signSignature: "",
-		signatures: null,
-		confirmations: "43",
-		args: null,
-		message: "",
-		asset: {
-			aobTransfer: {
-				transactionId: "7cf50223e12b6eb51096353a066befcf2ef862bdd4d4eddcba28a79aa0249af9",
-				currency: "absorb.YLB",
-				amount: "100000000",
-				amountShow: "1",
-				precision: 8
-			}
-		}
-	}],
-	count: 2
+  "success": true,
+  "result": {
+    "rows": [
+      {
+        "id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+        "height": "274",
+        "block_id": "c814eca7aba5796e836e8f927e2614484086293945d378e0f7a8ea7c6b889a6a",
+        "type": 65,
+        "timestamp": 55108730,
+        "sender_public_key": "0b5cfb77f401c818f7ebf02a0e88d52a28d3e4e24643e8a080c0c20ac45d0b9c",
+        "sender_id": "DLbsdFXJNVa68SCAJxtGMaGdfBWkPALZzJ",
+        "recipient_id": "DJS57PDiq2srYdL5eqzUt7oAZ4WvEkVT9q",
+        "amount": "0",
+        "fee": "10000000",
+        "signature": "f0e5cb2b832ff662c3da84b5fbb18860da4f6501679e6b2f1009f5dc24c6a75677a0fdc8812c4e9c28fbbe3f1f24b84089f366899811f365791474b5d49b2605",
+        "sign_signature": null,
+        "signatures": null,
+        "confirmations": 431,
+        "args": null,
+        "message": "测试转账",
+        "asset": {
+          "aobTransfer": {
+            "transaction_id": "8c8992ed2bc5e6b4aadbc0cd654eb5c4666566a9313a14607456f8cb6c6a5462",
+            "transaction_type": 65,
+            "timestamp": 55108730,
+            "currency": "DDD.NCR",
+            "amount": "10"
+          }
+        }
+      }
+    ],
+    "total": 1
+  }
 }
 ```   

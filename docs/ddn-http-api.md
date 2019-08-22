@@ -47,7 +47,7 @@ var publicKey = DdnJS.crypto.getKeys(secret).publicKey;  //根据密码生成公
 // var address = DdnJS.crypto.getAddress(publicKey);   //根据公钥生成地址
 
 // 将上面生成的数据通过post提交到DDN server   
-curl -X POST -H "Content-Type: application/json" -k -d '{"publicKey":"bd1e78c5a10fbf1eca36b28bbb8ea85f320967659cbf1f7ff1603d0a368867b9"}' http://47.93.61.182:8001/api/accounts/open2/   
+curl -X POST -H "Content-Type: application/json" -k -d '{"publicKey":"bd1e78c5a10fbf1eca36b28bbb8ea85f320967659cbf1f7ff1603d0a368867b9"}' http://47.92.0.84:8001/api/accounts/open2/   
 ```   
    
 JSON返回示例：   
@@ -98,7 +98,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -X POST -H "Content-Type: application/json" -k -d '{"secret":"fault still attack alley expand music basket purse later educate follow ride"}' http://47.93.61.182:8001/api/accounts/open/   
+curl -X POST -H "Content-Type: application/json" -k -d '{"secret":"fault still attack alley expand music basket purse later educate follow ride"}' http://47.92.0.84:8001/api/accounts/open/   
 ```   
    
 JSON返回示例：   
@@ -139,7 +139,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/accounts?address=D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC   
+curl -k -X GET http://47.92.0.84:8001/api/accounts?address=D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC   
 ```   
    
 JSON返回示例：   
@@ -190,7 +190,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/getBalance?address=DQ9vRnmaZACJ43vnhZyZmCX6dfksvMaqFR'   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/getBalance?address=DQ9vRnmaZACJ43vnhZyZmCX6dfksvMaqFR'   
 ```   
    
 JSON返回示例：   
@@ -221,7 +221,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/getPublickey?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/getPublickey?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
 ```   
    
 JSON返回示例：   
@@ -252,7 +252,7 @@ todo
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"fault still attack alley expand music basket purse later educate follow ride"}' 'http://47.93.61.182:8001/api/accounts/generatePublickey'   
+curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"fault still attack alley expand music basket purse later educate follow ride"}' 'http://47.92.0.84:8001/api/accounts/generatePublickey'   
 ```   
    
 JSON返回示例：   
@@ -283,7 +283,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/delegates?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates?address=D792yYKHLNSpsEoRT5c3whgmCq2VYpam55'   
 ```   
    
 JSON返回示例：   
@@ -310,7 +310,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/delegates/fee  
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/delegates/fee  
 ```   
    
 JSON返回示例：   
@@ -345,7 +345,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"call scissors pupil water friend timber spend brand vote obey corn size","publicKey":"3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a","delegates":["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]}' 'http://47.93.61.182:8001/api/accounts/delegates'     
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"call scissors pupil water friend timber spend brand vote obey corn size","publicKey":"3ec1c9ec08c0512641deba37c0e95a0fe5fc3bdf58424009f594d7d6a4e28a2a","delegates":["+fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575"]}' 'http://47.92.0.84:8001/api/accounts/delegates'     
 ```   
    
 JSON返回示例：   
@@ -392,7 +392,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/new'   
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/new'   
 ```   
    
 JSON返回示例：   
@@ -427,7 +427,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/top?limit=5&offset=0'  //返回前5名账户信息
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/top?limit=5&offset=0'  //返回前5名账户信息
 ```   
    
 JSON返回示例：   
@@ -475,7 +475,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/accounts/count'    
+curl -k -X GET 'http://47.92.0.84:8001/api/accounts/count'    
 ```   
    
 JSON返回示例：   
@@ -524,7 +524,7 @@ todo
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/transactions?recipientId=D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC&orderBy=t_timestamp:desc&limit=3'   
+curl -k -X GET 'http://47.92.0.84:8001/api/transactions?recipientId=D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC&orderBy=t_timestamp:desc&limit=3'   
 ```   
    
 JSON返回示例：   
@@ -611,7 +611,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/transactions/get?id=14093929199102906687'   
+curl -k -X GET 'http://47.92.0.84:8001/api/transactions/get?id=14093929199102906687'   
 ```   
    
 JSON返回示例：   
@@ -659,7 +659,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/transactions/unconfirmed/get?id=7557072430673853692  // 正常情况，该未确认交易存在时间极短0~10秒   
+curl -k -X GET http://47.92.0.84:8001/api/transactions/unconfirmed/get?id=7557072430673853692  // 正常情况，该未确认交易存在时间极短0~10秒   
 ```   
    
 JSON返回示例：   
@@ -708,7 +708,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/transactions/unconfirmed'   
+curl -k -X GET 'http://47.92.0.84:8001/api/transactions/unconfirmed'   
 ```   
    
 JSON返回示例：   
@@ -745,7 +745,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","amount":1000000,"recipientId":"D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC"}' 'http://47.93.61.182:8001/api/transactions'    
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","amount":1000000,"recipientId":"D2zThPTQZDNQqXbe5tikDQ24YyCQTCpbSC"}' 'http://47.92.0.84:8001/api/transactions'    
 ```   
    
 JSON返回示例：   
@@ -779,7 +779,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/get?id=6076474715648888747'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/get?id=6076474715648888747'   
 ```   
    
 JSON返回示例：   
@@ -837,7 +837,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks?limit=2&offset=0&orderBy=height:desc'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks?limit=2&offset=0&orderBy=height:desc'   
 ```   
    
 JSON返回示例：   
@@ -899,7 +899,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getheight'    
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getheight'    
 ```   
    
 JSON返回示例：   
@@ -923,7 +923,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getfee'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getfee'   
 ```   
    
 JSON返回示例：   
@@ -946,7 +946,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getMilestone'    
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getMilestone'    
 ```   
    
 JSON返回示例：   
@@ -970,7 +970,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getReward'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getReward'   
 ```   
    
 JSON返回示例：   
@@ -994,7 +994,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getSupply'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getSupply'   
 ```   
    
 JSON返回示例：   
@@ -1022,7 +1022,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/getStatus'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/getStatus'   
 ```   
    
 JSON返回示例：   
@@ -1061,7 +1061,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/blocks/full?height=6666'   
+curl -k -X GET 'http://47.92.0.84:8001/api/blocks/full?height=6666'   
 ```   
    
 JSON返回示例：   
@@ -1107,7 +1107,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates/count'   
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates/count'   
 ```   
    
 JSON返回示例：   
@@ -1137,7 +1137,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates/voters?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates/voters?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
 ```   
    
 JSON返回示例：   
@@ -1176,8 +1176,8 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/delegates/get?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6   
-curl -k -X GET http://47.93.61.182:8001/api/delegates/get?username=ddn_88   
+curl -k -X GET http://47.92.0.84:8001/api/delegates/get?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6   
+curl -k -X GET http://47.92.0.84:8001/api/delegates/get?username=ddn_88   
 ```   
    
 JSON返回示例：   
@@ -1228,7 +1228,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates?orderby=approval:desc&limit=2' //按照得票率降序排序，取出前2名   
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates?orderby=approval:desc&limit=2' //按照得票率降序排序，取出前2名   
 ```   
    
 JSON返回示例：   
@@ -1291,7 +1291,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates/fee?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates/fee?publicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
 ```   
    
 JSON返回示例：   
@@ -1321,7 +1321,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates/forging/getForgedByAccount?generatorPublicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates/forging/getForgedByAccount?generatorPublicKey=0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6'   
 ```   
    
 JSON返回示例：   
@@ -1357,7 +1357,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","username":"delegate_0821"}' 'http://47.93.61.182:8001/api/delegates'   
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","username":"delegate_0821"}' 'http://47.92.0.84:8001/api/delegates'   
 ```   
    
 JSON返回示例：   
@@ -1466,7 +1466,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/delegates/forging/status?publicKey=fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575'        
+curl -k -X GET 'http://47.92.0.84:8001/api/delegates/forging/status?publicKey=fafcd01f6b813fdeb3c086e60bc7fa9bfc8ef70ae7be47ce0ac5d06e7b1a8575'        
 ```   
    
 JSON返回示例：   
@@ -1505,7 +1505,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/peers?limit=1'   
+curl -k -X GET 'http://47.92.0.84:8001/api/peers?limit=1'   
 ```   
    
 JSON返回示例：   
@@ -1541,7 +1541,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/peers/version   
+curl -k -X GET http://47.92.0.84:8001/api/peers/version   
 ```   
    
 JSON返回示例：   
@@ -1576,7 +1576,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET 'http://47.93.61.182:8001/api/peers/get?ip=47.93.61.182&port=8001'   
+curl -k -X GET 'http://47.92.0.84:8001/api/peers/get?ip=47.92.0.84&port=8001'   
 ```   
    
 JSON返回示例：   
@@ -1606,7 +1606,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k http://47.93.61.182:8001/api/loader/status -X GET   
+curl -k http://47.92.0.84:8001/api/loader/status -X GET   
 ```   
    
 JSON返回示例：   
@@ -1633,7 +1633,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k http://47.93.61.182:8001/api/loader/status/sync -X GET   
+curl -k http://47.92.0.84:8001/api/loader/status/sync -X GET   
 ```   
    
 JSON返回示例：   
@@ -1671,7 +1671,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","secondSecret":"fault still attack alley expand music basket purse later educate follow ride"}' 'http://47.93.61.182:8001/api/signatures'    
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"unaware label emerge fancy concert long fiction report affair appear decide twenty","secondSecret":"fault still attack alley expand music basket purse later educate follow ride"}' 'http://47.92.0.84:8001/api/signatures'    
 ```   
    
 JSON返回示例：   
@@ -1715,7 +1715,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k http://47.93.61.182:8001/api/signatures/fee -X GET   
+curl -k http://47.92.0.84:8001/api/signatures/fee -X GET   
 ```   
    
 JSON返回示例：   
@@ -1756,7 +1756,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"vanish deliver message evil canyon night extend unusual tell prosper issue antenna","min":2,"lifetime":1,"keysgroup":["+eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97","+d5d7aa157f866c47a2a1e09e2746286ed089fd90976b54fbfa930e87d11609cb"]}' 'http://47.93.61.182:8001/api/multisignatures'  //公钥为2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
+curl -k -H "Content-Type: application/json" -X PUT -d '{"secret":"vanish deliver message evil canyon night extend unusual tell prosper issue antenna","min":2,"lifetime":1,"keysgroup":["+eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97","+d5d7aa157f866c47a2a1e09e2746286ed089fd90976b54fbfa930e87d11609cb"]}' 'http://47.92.0.84:8001/api/multisignatures'  //公钥为2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
 ```   
    
 JSON返回示例：   
@@ -1788,7 +1788,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
+curl -k -X GET http://47.92.0.84:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
 ```   
    
 JSON返回示例：   
@@ -1848,7 +1848,7 @@ JSON返回示例：
    
 请求示例：   
 ```bash   
-curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"lemon carpet desk accuse clerk future oyster essay seminar force live dog","transactionId":"17620378998277022323"}' 'http://47.93.61.182:8001/api/multisignatures/sign'   //公钥为eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97的用户进行签名   
+curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"lemon carpet desk accuse clerk future oyster essay seminar force live dog","transactionId":"17620378998277022323"}' 'http://47.92.0.84:8001/api/multisignatures/sign'   //公钥为eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97的用户进行签名   
 ```   
    
 JSON返回示例：   
@@ -1858,7 +1858,7 @@ JSON返回示例：
 	"transactionId": "17620378998277022323"   
 }   
 // 此时再次获取pending   
-curl -k -X GET http://47.93.61.182:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
+curl -k -X GET http://47.92.0.84:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
 {   
 	"success": true,   
 	"transactions": [{   
@@ -1890,13 +1890,13 @@ curl -k -X GET http://47.93.61.182:8001/api/multisignatures/pending?publicKey=2c
 }   
    
 // 公钥为d5d7aa157f866c47a2a1e09e2746286ed089fd90976b54fbfa930e87d11609cb的账户对该注册交易进行签名   
-curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"chalk among elbow piece badge try van round quality position simple teach","transactionId":"17620378998277022323"}' 'http://47.93.61.182:8001/api/multisignatures/sign'   
+curl -k -H "Content-Type: application/json" -X POST -d '{"secret":"chalk among elbow piece badge try van round quality position simple teach","transactionId":"17620378998277022323"}' 'http://47.92.0.84:8001/api/multisignatures/sign'   
 {"success":true,"transactionId":"17620378998277022323"}   
 // 此时再次获取pending,结果为空   
-curl -k -X GET http://47.93.61.182:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
+curl -k -X GET http://47.92.0.84:8001/api/multisignatures/pending?publicKey=2cef5711e61bb5361c544077aa08aebc4d962a1d656571901c48d716382ad4fd   
 {"success":true,"transactions":[]}   
 // 查看该注册交易详情（该交易已广播并写入blockchain）,此时该账户已成功注册成为多重签名账户   
-curl -k -X GET http://47.93.61.182:8001/api/transactions/get?id=17620378998277022323   
+curl -k -X GET http://47.92.0.84:8001/api/transactions/get?id=17620378998277022323   
 {   
 	"success": true,   
 	"transaction": {   
@@ -1943,7 +1943,7 @@ curl -k -X GET http://47.93.61.182:8001/api/transactions/get?id=1762037899827702
    
 请求示例：   
 ```bash   
-curl -k -X GET http://47.93.61.182:8001/api/multisignatures/accounts?publicKey=eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97   
+curl -k -X GET http://47.92.0.84:8001/api/multisignatures/accounts?publicKey=eb48b9ab7c9a34a9b7cdf860265d65b31af774355cabf1b3a387d14a1925dc97   
 ```   
    
 JSON返回示例：   
@@ -2012,7 +2012,7 @@ console.log(JSON.stringify(transaction))
 {"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}   
 
 // 将上面生成的设置二级密码的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}}' http://47.93.61.182:8001/peer/transactions   
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":1,"amount":0,"fee":500000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5328943,"asset":{"signature":{"publicKey":"27116db89cb5a8c02fb559712e0eabdc298480d3c79a089b803e35bc5ef7bb7b"}},"signature":"71ef98b1600f22f3b18cfcf17599db3c40727c230db817f610e86454b62df4fb830211737ff0c03c6a61ecfd4a9fcb68a30b2874060bb33b87766acf800e820a","id":"15605591820551652547"}}' http://47.92.0.84:8001/peer/transactions   
 ```   
    
 JSON返回示例：   
@@ -2052,7 +2052,7 @@ JSON.stringify(transaction)
 '{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}'
 
 // 将上面生成的转账操作的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}}' http://47.93.61.182:8001/peer/transactions
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":0,"amount":10000000000,"fee":10000000,"recipientId":"16358246403719868041","message":"","timestamp":37002975,"asset":{},"senderPublicKey":"8065a105c785a08757727fded3a06f8f312e73ad40f1f3502e0232ea42e67efd","signature":"bd0ed22abf09a13c1778ebfb96fc8584dd209961cb603fd0d818d88df647a926795b5e3c51e23f6ed38648169f4e4c912dd854725c22cce9bbdc15ec51c23008","id":"de72b89312c7d128db28611ed36eab2ff0136912c4a67f97342417c942b055cf"}}' http://47.92.0.84:8001/peer/transactions
 ```   
    
 JSON返回示例：   
@@ -2089,7 +2089,7 @@ JSON.stringify(transaction)
 '{"type":2,"amount":0,"fee":10000000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334485,"asset":{"delegate":{"username":"huoding_test","publicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f"}},"signature":"a12ce415d2d21ab46e4c1b918b8717b1d351dd99abd6f2f94d9a1a7e1f32b697f843a05b1851cb857ea45a2476dce592f5ddd612c00cd44488b8b610c57d7f0a","signSignature":"35adc9f1f37d14458e8588f9b4332eedf1151c02480159f64a287a4b0cbb59bfe82040dfec96a4d9560bae99b8eaa1799a7023395db5ddc640d95447992d6e00","id":"12310465407307249905"}'
 
 // 将上面生成的注册受托人的交易数据通过post提交给DDN server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":2,"amount":0,"fee":10000000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334485,"asset":{"delegate":{"username":"huoding_test","publicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f"}},"signature":"a12ce415d2d21ab46e4c1b918b8717b1d351dd99abd6f2f94d9a1a7e1f32b697f843a05b1851cb857ea45a2476dce592f5ddd612c00cd44488b8b610c57d7f0a","signSignature":"35adc9f1f37d14458e8588f9b4332eedf1151c02480159f64a287a4b0cbb59bfe82040dfec96a4d9560bae99b8eaa1799a7023395db5ddc640d95447992d6e00","id":"12310465407307249905"}}' http://47.93.61.182:8001/peer/transactions
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":2,"amount":0,"fee":10000000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334485,"asset":{"delegate":{"username":"huoding_test","publicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f"}},"signature":"a12ce415d2d21ab46e4c1b918b8717b1d351dd99abd6f2f94d9a1a7e1f32b697f843a05b1851cb857ea45a2476dce592f5ddd612c00cd44488b8b610c57d7f0a","signSignature":"35adc9f1f37d14458e8588f9b4332eedf1151c02480159f64a287a4b0cbb59bfe82040dfec96a4d9560bae99b8eaa1799a7023395db5ddc640d95447992d6e00","id":"12310465407307249905"}}' http://47.92.0.84:8001/peer/transactions
 ```   
    
 JSON返回示例：   
@@ -2130,7 +2130,7 @@ JSON.stringify(transaction)
 {"type":3,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334923,"asset":{"vote":{"votes":["-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6","+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2"]}},"signature":"6036c2066a231c452a1c83aafd3bb9db3842ee05d5f17813f8264a4294cdec761faa89edf4a95f9b2e2451285807ab18aa9f989ad9a3165b95643179b8e4580f","signSignature":"a216ca739112e6f65986604b9467ccc8058138a7077faf134d6c4d673306cd1c514cc95bd54a036f7c602a56c4b4f2e4e59f6aa7c376cb1429e89054042e050b","id":"17558357483072606427"}
 
 // 将上面生成的投票的交易数据通过post提交给ddn server
-curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":3,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334923,"asset":{"vote":{"votes":["-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6","+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2"]}},"signature":"6036c2066a231c452a1c83aafd3bb9db3842ee05d5f17813f8264a4294cdec761faa89edf4a95f9b2e2451285807ab18aa9f989ad9a3165b95643179b8e4580f","signSignature":"a216ca739112e6f65986604b9467ccc8058138a7077faf134d6c4d673306cd1c514cc95bd54a036f7c602a56c4b4f2e4e59f6aa7c376cb1429e89054042e050b","id":"17558357483072606427"}}' http://47.93.61.182:8001/peer/transactions
+curl -H "Content-Type: application/json" -H "nethash:0ab796cd" -H "version:''" -k -X POST -d '{"transaction":{"type":3,"amount":0,"fee":10000000,"recipientId":null,"senderPublicKey":"3e6e7c90571b9f7dabc0abc2e499c2fcee8e436af3a9d5c8eadd82ac7aeae85f","timestamp":5334923,"asset":{"vote":{"votes":["-0095b28997a33bb4f16b62523bcc1902179f2a7b5a3dd83980da5c1cbae854d6","+c292db6ea14d518bc29e37cb227ff260be21e2e164ca575028835a1f499e4fe2"]}},"signature":"6036c2066a231c452a1c83aafd3bb9db3842ee05d5f17813f8264a4294cdec761faa89edf4a95f9b2e2451285807ab18aa9f989ad9a3165b95643179b8e4580f","signSignature":"a216ca739112e6f65986604b9467ccc8058138a7077faf134d6c4d673306cd1c514cc95bd54a036f7c602a56c4b4f2e4e59f6aa7c376cb1429e89054042e050b","id":"17558357483072606427"}}' http://47.92.0.84:8001/peer/transactions
 ```   
    
 JSON返回示例：   
