@@ -14,7 +14,7 @@
     ],
     "APIs": [
       "ddn-cli-api",
-      "ddn-js-api",
+      "ddn-javascript-sdk",
       "ddn-node-sdk-api",
       "ddn-http-api",
       "ddn-aob-api",
