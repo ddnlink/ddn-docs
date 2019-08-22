@@ -2,29 +2,20 @@
   "docs": {
     "The Basics": [
       "ddn-install",
+      "ddn-framework",
+      "ddn-database",
+      "ddn-context",
+      "ddn-api-design",
+      "ddn-extend-assets",
       "ddn-dapp",
       "ddn-contributing",
       "ddn-wallet-guide",
       "ddn-explorer-guide"
     ],
-    "Guides": [
-      "ebook/eok-beginning",
-      "ebook/eok-cryptocurrency",
-      "ebook/eok-interest",
-      "ebook/eok-consensus-mechanism",
-      "ebook/eok-architecture",
-      "ebook/eok-code-reading",
-      "ebook/eok-appjs",
-      "ebook/eok-address",
-      "ebook/eok-p2p",
-      "ebook/eok-crypto",
-      "ebook/eok-sign",
-      "ebook/eok-blockchain",
-      "ebook/eok-dpos"
-    ],
     "APIs": [
       "ddn-cli-api",
       "ddn-js-api",
+      "ddn-node-sdk-api",
       "ddn-http-api",
       "ddn-aob-api",
       "ddn-dapp-api"

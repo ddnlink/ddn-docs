@@ -4,61 +4,143 @@
     "next": "Next",
     "previous": "Previous",
     "tagline": "API",
-    "ddn-aob-api": "Assets on blockchain",
-    "Assets on blockchain": "Assets on blockchain",
-    "ddn-cli-api": "CLI Commands",
-    "CLI Commands": "CLI Commands",
-    "ddn-contributing": "Contributing",
-    "Contributing": "Contributing",
-    "ddn-dapp-api": "Dapp api",
-    "Dapp": "Dapp",
-    "ddn-dapp": "Dapp",
-    "ddn-explorer-guide": "Blockchain Explorer",
-    "Blockchain Explorer": "Blockchain Explorer",
-    "ddn-http-api": "Http api",
-    "Http api": "Http api",
-    "ddn-install": "Peer Install",
-    "Peer Install": "Peer Install",
-    "ddn-js-api": "ddn-js Api",
-    "ddn-js Api": "ddn-js Api",
-    "ddn-wallet-guide": "Wallet",
-    "Wallet": "Wallet",
-    "ebook/eok-address": "Address",
-    "Address": "Address",
-    "ebook/eok-appjs": "App.js",
-    "App.js": "App.js",
-    "ebook/eok-architecture": "Architecture",
-    "Architecture": "Architecture",
-    "ebook/eok-beginning": "Understanding blockchain",
-    "Understanding blockchain": "Understanding blockchain",
-    "ebook/eok-blockchain": "Blockchain",
-    "Blockchain": "Blockchain",
-    "ebook/eok-code-reading": "Code Reading",
-    "Code Reading": "Code Reading",
-    "ebook/eok-consensus-mechanism": "Consensus mechanism",
-    "Consensus mechanism": "Consensus mechanism",
-    "ebook/eok-crypto": "Sign and Crypto",
-    "Sign and Crypto": "Sign and Crypto",
-    "ebook/eok-cryptocurrency": "Cryptocurrency is a currency",
-    "Cryptocurrency is a currency": "Cryptocurrency is a currency",
-    "ebook/eok-dpos": "Dpos",
-    "Dpos": "Dpos",
-    "ebook/eok-ebookchain": "Ebookchain",
-    "Ebookchain": "Ebookchain",
-    "ebook/eok-interest": "Interest",
-    "Interest": "Interest",
-    "ebook/eok-p2p": "p2p",
-    "p2p": "p2p",
-    "ebook/eok-sign": "sign",
-    "sign": "sign",
-    "ebook/eok-transfermation": "Transfermation",
-    "Transfermation": "Transfermation",
-    "getting-started": "Peer install",
-    "Docs": "Docs",
-    "Blog": "Blog",
-    "The Basics": "The Basics",
-    "Guides": "Guides",
-    "APIs": "APIs"
+    "docs": {
+      "ddn-aob-api": {
+        "title": "Assets on blockchain",
+        "sidebar_label": "Assets on blockchain"
+      },
+      "ddn-api-design": {
+        "title": "Api Design",
+        "sidebar_label": "Api Design"
+      },
+      "ddn-cli-api": {
+        "title": "CLI Commands",
+        "sidebar_label": "CLI Commands"
+      },
+      "ddn-context": {
+        "title": "DDN Context",
+        "sidebar_label": "DDN Context"
+      },
+      "ddn-contributing": {
+        "title": "Contributing",
+        "sidebar_label": "Contributing"
+      },
+      "ddn-dapp-api": {
+        "title": "Dapp api",
+        "sidebar_label": "Dapp"
+      },
+      "ddn-dapp": {
+        "title": "Dapp",
+        "sidebar_label": "Dapp"
+      },
+      "ddn-database": {
+        "title": "Database",
+        "sidebar_label": "Database"
+      },
+      "ddn-explorer-guide": {
+        "title": "Blockchain Explorer",
+        "sidebar_label": "Blockchain Explorer"
+      },
+      "ddn-extend-assets": {
+        "title": "Extend Assets",
+        "sidebar_label": "Extend Assets"
+      },
+      "ddn-framework": {
+        "title": "Framework",
+        "sidebar_label": "Framework"
+      },
+      "ddn-http-api": {
+        "title": "Http api",
+        "sidebar_label": "Http api"
+      },
+      "ddn-install": {
+        "title": "Peer Install",
+        "sidebar_label": "Peer Install"
+      },
+      "ddn-js-api": {
+        "title": "ddn-js Api",
+        "sidebar_label": "ddn-js Api"
+      },
+      "ddn-node-sdk-api": {
+        "title": "DDN Node.js SDK Api",
+        "sidebar_label": "DDN Node.js SDK Api"
+      },
+      "ddn-wallet-guide": {
+        "title": "Wallet",
+        "sidebar_label": "Wallet"
+      },
+      "ebook/eok-address": {
+        "title": "Address",
+        "sidebar_label": "Address"
+      },
+      "ebook/eok-appjs": {
+        "title": "App.js",
+        "sidebar_label": "App.js"
+      },
+      "ebook/eok-architecture": {
+        "title": "Architecture",
+        "sidebar_label": "Architecture"
+      },
+      "ebook/eok-beginning": {
+        "title": "Understanding blockchain",
+        "sidebar_label": "Understanding blockchain"
+      },
+      "ebook/eok-blockchain": {
+        "title": "Blockchain",
+        "sidebar_label": "Blockchain"
+      },
+      "ebook/eok-code-reading": {
+        "title": "Code Reading",
+        "sidebar_label": "Code Reading"
+      },
+      "ebook/eok-consensus-mechanism": {
+        "title": "Consensus mechanism",
+        "sidebar_label": "Consensus mechanism"
+      },
+      "ebook/eok-crypto": {
+        "title": "Sign and Crypto",
+        "sidebar_label": "Sign and Crypto"
+      },
+      "ebook/eok-cryptocurrency": {
+        "title": "Cryptocurrency is a currency",
+        "sidebar_label": "Cryptocurrency is a currency"
+      },
+      "ebook/eok-dpos": {
+        "title": "Dpos",
+        "sidebar_label": "Dpos"
+      },
+      "ebook/eok-ebookchain": {
+        "title": "Ebookchain",
+        "sidebar_label": "Ebookchain"
+      },
+      "ebook/eok-interest": {
+        "title": "Interest",
+        "sidebar_label": "Interest"
+      },
+      "ebook/eok-p2p": {
+        "title": "p2p",
+        "sidebar_label": "p2p"
+      },
+      "ebook/eok-sign": {
+        "title": "sign",
+        "sidebar_label": "sign"
+      },
+      "ebook/eok-transfermation": {
+        "title": "Transfermation",
+        "sidebar_label": "Transfermation"
+      },
+      "getting-started": {
+        "title": "Peer install"
+      }
+    },
+    "links": {
+      "Docs": "Docs",
+      "Blog": "Blog"
+    },
+    "categories": {
+      "The Basics": "The Basics",
+      "APIs": "APIs"
+    }
   },
   "pages-strings": {
     "Learn more using the [documentation on this site.](/test-site/docs/en/doc1.html)|no description given": "Learn more using the [documentation on this site.](/test-site/docs/en/doc1.html)",

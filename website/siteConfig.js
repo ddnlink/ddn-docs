@@ -15,7 +15,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'DDN v2.1.2' /* title for your website */,
+  title: 'DDN v3.0.0' /* title for your website */,
   tagline: 'API',
   url: 'https://ddn.link' /* your website url */,
   baseUrl: '/' /* base url for your project */,
