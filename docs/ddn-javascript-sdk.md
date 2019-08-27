@@ -1,8 +1,7 @@
 ---
 id: ddn-javascript-sdk
-title: ddn-javascript-sdk
-sidebar_label: ddn-javascript-sdk
-original_id: ddn-javascript-sdk
+title: DDN Javascript SDK
+sidebar_label: DDN Javascript SDK
 ---
 
 
